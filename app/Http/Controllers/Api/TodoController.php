@@ -69,6 +69,7 @@ class TodoController extends Controller
         return response()->json($todo->load('user'));
     }
 
+
     /**
      * Update the specified resource in storage.
      */
