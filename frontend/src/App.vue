@@ -124,7 +124,7 @@ onMounted(fetchTodos)
       </div>
 
       <!-- Table -->
-      <div class="bg-white rounded-2xl shadow overflow-hidden">
+      <div class="bg-white rounded-2xl shadow overflow-auto">
         <table class="min-w-full">
           <thead class="bg-gray-100 text-sm">
             <tr>
