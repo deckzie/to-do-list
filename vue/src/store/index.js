@@ -75,8 +75,7 @@ const store = createStore({
             }
         },
         setTodos(state, todos) {
-            debugger;
-            state.todos = todos;
+            state.todos.data = todos;
         },
         addTodo(state, todo) {
             state.todos.data.push(todo);
