@@ -30,28 +30,6 @@ const store = createStore({
                 commit('setLoading', false);
             }
         },
-        // async getTodos({ commit }, page = 1) {
-        //     commit('setLoading', true);
-        //     try {
-        //         const response = await axiosClient.get(`/todos?page=${page}`);
-        //         commit('setTodos', {
-        //         data: response.data.data,
-        //         meta: {
-        //             current_page: response.data.current_page,
-        //             last_page: response.data.last_page,
-        //             per_page: response.data.per_page,
-        //             total: response.data.total,
-        //             links: response.data.links,
-        //             from: response.data.from,
-        //             to: response.data.to
-        //         }
-        //         });
-        //     } catch (error) {
-        //         console.error("Error fetching todos:", error);
-        //     } finally {
-        //         commit('setLoading', false);
-        //     }
-        // },
         async getTodos({ commit }, params = { page: 1 }) {
             commit('setLoading', true);
             try {

@@ -6,11 +6,6 @@ const routes = [
       name: 'To Do List',
       component: () => import('../views/TodoList.vue')
     },
-    // {
-    //   path: '/about',
-    //   name: 'About',
-    //   component: () => import('../views/About.vue')
-    // }
   ];
 
 const router = createRouter({

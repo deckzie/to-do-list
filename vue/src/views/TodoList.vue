@@ -30,13 +30,6 @@
     });
   });
 
-  // function loadPage(page) {
-  //   if (page >= 1 && page <= pagination.value.last_page) {
-  //     store.dispatch('getTodos', page).then(() => {
-  //       console.log('Fetched Pagination:', pagination.value); // Print pagination after fetching
-  //     });
-  //   }
-  // }
   function loadPage(page) {
   const params = {
     page,
