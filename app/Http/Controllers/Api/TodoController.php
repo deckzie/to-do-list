@@ -7,13 +7,37 @@ use App\Http\Controllers\Controller;
 
 class TodoController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     $perPage = $request->get('per_page', 8); // default to 10 items per page
+    //     $todos = Todo::paginate($perPage);
+
+    //     return response()->json($todos);
+    // }
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 8); // default to 10 items per page
-        $todos = Todo::paginate($perPage);
+        $perPage = $request->get('per_page', 8);
+        $query = Todo::query();
 
-        return response()->json($todos);
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('completed')) {
+            $completed = filter_var($request->completed, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            if (!is_null($completed)) {
+                $query->where('completed', $completed);
+            }
+        }
+
+
+        return response()->json($query->paginate($perPage));
     }
+
 
 
     public function store(Request $request)

@@ -91,6 +91,7 @@ const pageNumbers = computed(() => {
     range.push(i);
   }
   if (right < last - 1) range.push('...');
+  
   if (last > 1) range.push(last);
 
   return range;
