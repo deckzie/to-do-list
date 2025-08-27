@@ -9,7 +9,7 @@ class TodoController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 10); // default to 10 items per page
+        $perPage = $request->get('per_page', 8); // default to 10 items per page
         $todos = Todo::paginate($perPage);
 
         return response()->json($todos);

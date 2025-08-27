@@ -48,13 +48,27 @@ const props = defineProps({
 const emit = defineEmits(['page-change']);
 
 const pageNumbers = computed(() => {
-  const pages = [];
-  const last = props.pagination?.last_page || 1; // Use props.pagination
-  for (let i = 1; i <= last; i++) {
-    pages.push(i);
+  const current = props.pagination?.current_page || 1;
+  const last = props.pagination?.last_page || 1;
+  const delta = 1; // Number of pages to show around current
+  const range = [];
+  const rangeWithDots = [];
+
+  let left = Math.max(2, current - delta);
+  let right = Math.min(last - 1, current + delta);
+
+  // Always show first and last page
+  range.push(1);
+  if (left > 2) range.push('...');
+  for (let i = left; i <= right; i++) {
+    range.push(i);
   }
-  return pages;
+  if (right < last - 1) range.push('...');
+  if (last > 1) range.push(last);
+
+  return range;
 });
+
 
 function goToPage(page) {
   if (page >= 1 && page <= props.pagination?.last_page) {
