@@ -37,6 +37,7 @@ class TodoController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'completed' => 'boolean',
         ]);
 
@@ -50,9 +51,16 @@ class TodoController extends Controller
 
     public function update(Request $request, Todo $todo)
     {
-        $todo->update($request->only(['title', 'completed']));
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'completed' => 'boolean',
+        ]);
+
+        $todo->update($validated);
         return $todo;
     }
+
 
     public function destroy(Todo $todo)
     {
