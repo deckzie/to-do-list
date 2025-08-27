@@ -1,16 +1,22 @@
 <script setup>
-import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid'
-import { onMounted, computed } from 'vue';
-import { useStore } from 'vuex';
+  import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid'
+  import { onMounted, computed } from 'vue';
+  import { useStore } from 'vuex';
 
-const store = useStore();
+  const store = useStore();
 
-const todos = computed(() => store.state.todos.data);
-const loading = computed(() => store.state.todos.loading);
+  const todos = computed(() => store.state.todos.data);
+  const loading = computed(() => store.state.todos.loading);
 
-onMounted(() => {
-  store.dispatch('getTodos');
-});
+  onMounted(() => {
+    store.dispatch('getTodos');
+  });
+
+  function deleteTodo(index) {
+    const todoId = todos.value[index].id;
+    console.log('Deleting todo with ID:', todoId);
+    store.dispatch('deleteTodo', todoId);
+  }
 </script>
 
 
