@@ -68,7 +68,7 @@
 </script>
 
 <template>
-  <div class="max-w-md mx-auto mt-5 space-y-3">
+  <div class="w-7/10 mx-auto mt-5 space-y-3">
     <h1 class="text-2xl font-bold text-center text-green-700 mb-6">TodoList</h1>
     <div
       v-for="(todo, index) in todos"
@@ -105,7 +105,7 @@
       </div>
     </div>
     <!-- Pagination Component -->
-    <div class="flex mt-4">
+    <div class=" mt-4">
       <Pagination :pagination="pagination" @page-change="loadPage" />
     </div>
   </div>

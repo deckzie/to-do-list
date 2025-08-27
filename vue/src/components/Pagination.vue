@@ -1,10 +1,13 @@
 <template>
   <div class="flex items-center justify-between p-4 bg-white border-t border-gray-200">
-      <div class="text-xs text-gray-500 mb-2">
-        {{ pagination.from }} to {{ pagination.to }} out of {{ pagination.total }} items
-      </div>
+    <div class="text-xs text-gray-500 mb-2">
+      {{ pagination.from }} to {{ pagination.to }} out of {{ pagination.total }} items
+    </div>
 
-    <nav class="isolate justify-end inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+    <nav
+      class="isolate justify-end inline-flex -space-x-px rounded-md shadow-sm"
+      aria-label="Pagination"
+    >
       <!-- Previous Button -->
       <button
         @click="goToPage(pagination.current_page - 1)"
@@ -16,18 +19,20 @@
       </button>
 
       <!-- Page Numbers -->
-      <template v-for="page in pageNumbers" :key="page">
-        <button
-          @click="goToPage(page)"
-          :class="[
-            'relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0',
-            page === pagination.current_page
-              ? 'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-              : 'text-gray-900 hover:bg-gray-50'
-          ]"
-        >
-          {{ page }}
-        </button>
+      <template v-if="!isSmallScreen">
+        <template v-for="page in pageNumbers" :key="page">
+          <button
+            @click="goToPage(page)"
+            :class="[
+              'relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0',
+              page === pagination.current_page
+                ? 'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                : 'text-gray-900 hover:bg-gray-50'
+            ]"
+          >
+            {{ page }}
+          </button>
+        </template>
       </template>
 
       <!-- Next Button -->
@@ -45,7 +50,7 @@
 
 <script setup>
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid';
-import { computed } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 
 const props = defineProps({
   pagination: Object, // Ensure this is defined
@@ -53,10 +58,26 @@ const props = defineProps({
 
 const emit = defineEmits(['page-change']);
 
+const isSmallScreen = ref(false);
+
+onMounted(() => {
+  const updateScreenSize = () => {
+    isSmallScreen.value = window.innerWidth < 640; // Adjust breakpoint as needed
+  };
+
+  updateScreenSize();
+  window.addEventListener('resize', updateScreenSize);
+
+  // Cleanup listener on unmount
+  return () => {
+    window.removeEventListener('resize', updateScreenSize);
+  };
+});
+
 const pageNumbers = computed(() => {
   const current = props.pagination?.current_page || 1;
   const last = props.pagination?.last_page || 1;
-  const delta = 1; // Number of pages to show around current
+  const delta = 0; // Number of pages to show around current
   const range = [];
   const rangeWithDots = [];
 
@@ -74,7 +95,6 @@ const pageNumbers = computed(() => {
 
   return range;
 });
-
 
 function goToPage(page) {
   if (page >= 1 && page <= props.pagination?.last_page) {
