@@ -1,20 +1,23 @@
 <template>
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
     <input
-      v-model="searchQuery"
-      type="text"
-      placeholder="Search by title or description..."
-      class="w-full sm:w-2/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+    :value="searchQuery"
+    @input="event => emit('update:searchQuery', event.target.value)"
+    type="text"
+    placeholder="Search..."
+    class="..."
     />
 
     <select
-      v-model="statusFilter"
-      class="w-full sm:w-1/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+    :value="statusFilter"
+    @change="event => emit('update:statusFilter', event.target.value)"
+    class="..."
     >
-      <option value="">All</option>
-      <option value="1">Completed</option>
-      <option value="0">Pending</option>
+    <option value="">All</option>
+    <option value="true">Completed</option>
+    <option value="false">Pending</option>
     </select>
+
   </div>
 </template>
 

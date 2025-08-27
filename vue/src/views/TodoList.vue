@@ -19,9 +19,10 @@
 
   const searchQuery = ref('');
   const statusFilter = ref('');
+  const perPage = ref(10); // default value
 
-  watch([searchQuery, statusFilter], () => {
-    loadPage(1); // reset to first page on filter change
+  watch([searchQuery, statusFilter, perPage], () => {
+    loadPage(1); // reset to page 1 when filters or perPage change
   });
 
 
@@ -32,16 +33,17 @@
   });
 
   function loadPage(page) {
-  const params = {
-    page,
-    search: searchQuery.value,
-    completed: statusFilter.value
-  };
+    const params = {
+      page,
+      per_page: perPage.value,
+      search: searchQuery.value,
+      completed: statusFilter.value
+    };
 
-  store.dispatch('getTodos', params).then(() => {
-    console.log('Fetched with filters:', params);
-  });
-}
+    store.dispatch('getTodos', params).then(() => {
+      console.log('Fetched with filters:', params);
+    });
+  }
 
 
   function deleteTodo(index) {
@@ -93,6 +95,22 @@
       @update:searchQuery="value => (searchQuery.value = value)"
       @update:statusFilter="value => (statusFilter.value = value)"
     />
+
+    <!-- Number of items -->
+    <div class="flex items-center justify-end mb-4">
+      <label for="perPage" class="mr-2 text-sm text-gray-600">Items per page:</label>
+      <select
+        id="perPage"
+        v-model="perPage"
+        class="px-2 justify-center py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+      >
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+
 
     <div
       v-for="(todo, index) in todos"
