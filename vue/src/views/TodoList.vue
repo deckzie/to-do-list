@@ -6,6 +6,7 @@
   import { watch } from 'vue'
   import TodoForm from '../components/TodoForm.vue';
   import Pagination from '../components/Pagination.vue';
+  import SearchFilter from '../components/SearchFilter.vue';
 
   const showForm = ref(false);
   const selectedTodo = ref(null);
@@ -86,23 +87,12 @@
     <h1 class="text-2xl font-bold text-center text-green-700 mb-6">TodoList</h1>
     
     <!-- search and filter -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search by title or description..."
-        class="w-full sm:w-2/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-      />
-
-      <select
-        v-model="statusFilter"
-        class="w-full sm:w-1/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-      >
-        <option value="">All</option>
-        <option value="1">Completed</option>
-        <option value="0">Pending</option>
-      </select>
-    </div>
+    <SearchFilter
+      :searchQuery="searchQuery"
+      :statusFilter="statusFilter"
+      @update:searchQuery="value => (searchQuery.value = value)"
+      @update:statusFilter="value => (statusFilter.value = value)"
+    />
 
     <div
       v-for="(todo, index) in todos"
