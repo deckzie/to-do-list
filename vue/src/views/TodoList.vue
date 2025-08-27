@@ -35,12 +35,13 @@
           class="form-checkbox h-5 w-5 text-green-500"
         />
         <span
+          class="max-w-xs truncate"
           :class="{
             'line-through text-gray-400': todo.completed,
             'text-gray-800': !todo.completed
           }"
         >
-          {{ todo.title }}
+          {{ todo.description }}
         </span>
       </div>
       <div class="flex space-x-2">
