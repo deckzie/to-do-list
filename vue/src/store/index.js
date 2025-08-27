@@ -3,15 +3,17 @@ import axiosClient from "../axios";
 
 const store = createStore({
     state: {
-        user: {
-            id: null,
-            name: '',
-            email: ''
-        },
-        todos:{
-            loading: false,
-            data: []
-        },
+        todos: {
+            data: [],
+            meta: {
+            current_page: 1,
+            last_page: 1,
+            per_page: 10,
+            total: 0,
+            links: []
+            },
+            loading: false
+        }
     },
     getters: {},
     actions: {
@@ -26,11 +28,20 @@ const store = createStore({
                 commit('setLoading', false);
             }
         },
-        async getTodos({commit}) {
+        async getTodos({ commit }, page = 1) {
             commit('setLoading', true);
             try {
-                const response = await axiosClient.get('/todos');
-                commit('setTodos', response.data);
+                const response = await axiosClient.get(`/todos?page=${page}`);
+                commit('setTodos', {
+                data: response.data.data,
+                meta: {
+                    current_page: response.data.current_page,
+                    last_page: response.data.last_page,
+                    per_page: response.data.per_page,
+                    total: response.data.total,
+                    links: response.data.links
+                }
+                });
             } catch (error) {
                 console.error("Error fetching todos:", error);
             } finally {
@@ -87,8 +98,9 @@ const store = createStore({
                 state.todos.data.splice(index, 1, todo);
             }
         },
-        setTodos(state, todos) {
-            state.todos.data = todos;
+        setTodos(state, { data, meta }) {
+            state.todos.data = data;
+            state.todos.meta = meta;
         },
         removeTodo(state, todoId) {
             state.todos.data = state.todos.data.filter(todo => todo.id !== todoId);

@@ -13,6 +13,6 @@ class TodosTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Todo::factory()->count(50)->create();
+        Todo::factory()->count(500)->create();
     }
 }

@@ -7,10 +7,14 @@ use App\Http\Controllers\Controller;
 
 class TodoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Todo::all());
+        $perPage = $request->get('per_page', 10); // default to 10 items per page
+        $todos = Todo::paginate($perPage);
+
+        return response()->json($todos);
     }
+
 
     public function store(Request $request)
     {

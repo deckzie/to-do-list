@@ -1,0 +1,64 @@
+<template>
+  <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+    <!-- Previous Button -->
+    <button
+      @click="goToPage(pagination.current_page - 1)"
+      :disabled="pagination.current_page === 1"
+      class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50"
+    >
+      <span class="sr-only">Previous</span>
+      <ChevronLeftIcon class="size-5" aria-hidden="true" />
+    </button>
+
+    <!-- Page Numbers -->
+    <template v-for="page in pageNumbers" :key="page">
+      <button
+        @click="goToPage(page)"
+        :class="[
+          'relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0',
+          page === pagination.current_page
+            ? 'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+            : 'text-gray-900 hover:bg-gray-50'
+        ]"
+      >
+        {{ page }}
+      </button>
+    </template>
+
+    <!-- Next Button -->
+    <button
+      @click="goToPage(pagination.current_page + 1)"
+      :disabled="pagination.current_page === pagination.last_page"
+      class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50"
+    >
+      <span class="sr-only">Next</span>
+      <ChevronRightIcon class="size-5" aria-hidden="true" />
+    </button>
+  </nav>
+</template>
+
+<script setup>
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid';
+import { computed } from 'vue';
+
+const props = defineProps({
+  pagination: Object, // Ensure this is defined
+});
+
+const emit = defineEmits(['page-change']);
+
+const pageNumbers = computed(() => {
+  const pages = [];
+  const last = props.pagination?.last_page || 1; // Use props.pagination
+  for (let i = 1; i <= last; i++) {
+    pages.push(i);
+  }
+  return pages;
+});
+
+function goToPage(page) {
+  if (page >= 1 && page <= props.pagination?.last_page) {
+    emit('page-change', page);
+  }
+}
+</script>

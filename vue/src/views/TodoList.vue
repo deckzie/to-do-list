@@ -1,23 +1,33 @@
 <script setup>
-  import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid'
+  import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
   import { onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { ref } from 'vue';
   import TodoForm from '../components/TodoForm.vue';
-
+  import Pagination from '../components/Pagination.vue';
 
   const showForm = ref(false);
   const selectedTodo = ref(null);
 
-
   const store = useStore();
 
   const todos = computed(() => store.state.todos.data);
+  const pagination = computed(() => store.state.todos.meta);
   const loading = computed(() => store.state.todos.loading);
 
   onMounted(() => {
-    store.dispatch('getTodos');
+    store.dispatch('getTodos').then(() => {
+      console.log('Fetched Todos:', todos.value); // Print todos after fetching
+    });
   });
+
+  function loadPage(page) {
+    if (page >= 1 && page <= pagination.value.last_page) {
+      store.dispatch('getTodos', page).then(() => {
+        console.log('Fetched Pagination:', pagination.value); // Print pagination after fetching
+      });
+    }
+  }
 
   function deleteTodo(index) {
     const todoId = todos.value[index].id;
@@ -55,9 +65,7 @@
     };
     store.dispatch('updateTodo', updatedTodo);
   }
-
 </script>
-
 
 <template>
   <div class="max-w-md mx-auto mt-10 space-y-1">
@@ -96,6 +104,11 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- Pagination Component -->
+  <div class="flex justify-center mt-4">
+    <Pagination :pagination="pagination" @page-change="loadPage" />
   </div>
 
   <TodoForm
