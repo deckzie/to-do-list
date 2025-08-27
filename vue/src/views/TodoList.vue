@@ -48,6 +48,14 @@
     showForm.value = false;
   }
 
+  function toggleCompleted(todo) {
+    const updatedTodo = {
+      ...todo,
+      completed: !todo.completed // flip the boolean
+    };
+    store.dispatch('updateTodo', updatedTodo);
+  }
+
 </script>
 
 
@@ -64,7 +72,8 @@
       <div class="flex items-center space-x-3">
         <input
           type="checkbox"
-          v-model="todo.completed"
+          :checked="todo.completed"
+           @change="toggleCompleted(todo)"
           class="form-checkbox h-5 w-5 text-green-500"
         />
         <span
