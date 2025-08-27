@@ -105,7 +105,7 @@
       </div>
     </div>
     <!-- Pagination Component -->
-    <div class="flex justify-end mt-4">
+    <div class="flex mt-4">
       <Pagination :pagination="pagination" @page-change="loadPage" />
     </div>
   </div>

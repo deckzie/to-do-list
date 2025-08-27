@@ -10,7 +10,9 @@ const store = createStore({
             last_page: 1,
             per_page: 10,
             total: 0,
-            links: []
+            links: [],
+            from: 1,
+            to: 10
             },
             loading: false
         }
@@ -39,7 +41,9 @@ const store = createStore({
                     last_page: response.data.last_page,
                     per_page: response.data.per_page,
                     total: response.data.total,
-                    links: response.data.links
+                    links: response.data.links,
+                    from: response.data.from,
+                    to: response.data.to
                 }
                 });
             } catch (error) {
@@ -100,7 +104,15 @@ const store = createStore({
         },
         setTodos(state, { data, meta }) {
             state.todos.data = data;
-            state.todos.meta = meta;
+            state.todos.meta = {
+                current_page: meta.current_page,
+                last_page: meta.last_page,
+                per_page: meta.per_page,
+                total: meta.total,
+                links: meta.links,
+                from: meta.from,
+                to: meta.to
+            };
         },
         removeTodo(state, todoId) {
             state.todos.data = state.todos.data.filter(todo => todo.id !== todoId);
