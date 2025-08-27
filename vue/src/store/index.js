@@ -63,6 +63,19 @@ const store = createStore({
                     commit('setLoading', false);
                 });
         },
+        addTodo({ commit }, todoData) {
+            axiosClient.post('/todos', todoData)
+                .then(({ data }) => {
+                    commit('addTodo', data);
+                });
+        },
+
+        updateTodo({ commit }, todoData) {
+            axiosClient.put(`/todos/${todoData.id}`, todoData)
+                .then(({ data }) => {
+                    commit('updateTodo', data);
+                });
+        }
     },
     mutations: {
         setLoading(state, loading) {
@@ -77,12 +90,20 @@ const store = createStore({
         setTodos(state, todos) {
             state.todos.data = todos;
         },
-        addTodo(state, todo) {
-            state.todos.data.push(todo);
-        },
         removeTodo(state, todoId) {
             state.todos.data = state.todos.data.filter(todo => todo.id !== todoId);
         },
+        addTodo(state, todo) {
+            state.todos.data.push(todo);
+        },
+        updateTodo(state, updated) {
+            if (!updated || !updated.id) return;
+
+            const index = state.todos.data.findIndex(t => t.id === updated.id);
+            if (index !== -1) state.todos.data[index] = updated;
+        }
+
+
     },
     modules: {}
 

@@ -2,6 +2,13 @@
   import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid'
   import { onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
+  import { ref } from 'vue';
+  import TodoForm from '../components/TodoForm.vue';
+
+
+  const showForm = ref(false);
+  const selectedTodo = ref(null);
+
 
   const store = useStore();
 
@@ -17,10 +24,36 @@
     console.log('Deleting todo with ID:', todoId);
     store.dispatch('deleteTodo', todoId);
   }
+
+  function editTodo(index) {
+    selectedTodo.value = todos.value[index];
+    console.log('Editing todo:', selectedTodo.value);
+    showForm.value = true;
+  }
+
+  function addTodo() {
+    selectedTodo.value = null;
+    showForm.value = true;
+  }
+
+  function handleSubmit(todoData) {
+    console.log('Submitting todo:', todoData);
+
+    if (todoData.id) {
+      store.dispatch('updateTodo', todoData);
+    } else {
+      store.dispatch('addTodo', todoData);
+    }
+
+    showForm.value = false;
+  }
+
 </script>
 
 
 <template>
+  
+
   <div class="max-w-md mx-auto mt-10 space-y-1">
     <h1 class="text-2xl font-bold text-center text-green-700 mb-6">TodoList</h1>
     <div
@@ -41,7 +74,7 @@
             'text-gray-800': !todo.completed
           }"
         >
-          {{ todo.description }}
+          {{ todo.title }}
         </span>
       </div>
       <div class="flex space-x-2">
@@ -54,5 +87,10 @@
       </div>
     </div>
   </div>
+  <TodoForm
+    v-if="showForm"
+    :todo="selectedTodo"
+    @submit="handleSubmit"
+  />
 </template>
 

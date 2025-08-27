@@ -20,7 +20,7 @@ class TodoFactory extends Factory
             'user_id' => 1,
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
-            'status' => fake()->randomElement(['pending', 'done']),
+            'completed' => fake()->boolean(),
         ];
     }
 }

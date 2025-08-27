@@ -24,7 +24,7 @@ class UpdateTodoRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:pending,completed',
+            'completed' => 'required|boolean',
         ];
     }
 }

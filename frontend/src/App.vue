@@ -7,10 +7,10 @@ const meta = ref(null)
 
 const page = ref(1)
 const perPage = ref(10)
-const status = ref('')       // '', 'pending', 'done'
+const completed = ref('')       // '', 'pending', 'done'
 const search = ref('')
 
-const form = ref({ id:null, title:'', description:'', status:'pending', due_date:'' })
+const form = ref({ id:null, title:'', description:'', completed:false, due_date:'' })
 const loading = ref(false)
 
 async function fetchTodos() {
@@ -20,7 +20,7 @@ async function fetchTodos() {
       params: {
         page: page.value,
         per_page: perPage.value,
-        status: status.value || undefined,
+        completed: completed.value || undefined,
         search: search.value || undefined,
       }
     })
@@ -32,7 +32,7 @@ async function fetchTodos() {
 }
 
 function resetForm() {
-  form.value = { id:null, title:'', description:'', status:'pending', due_date:'' }
+  form.value = { id:null, title:'', description:'', completed:false, due_date:'' }
 }
 
 async function submitForm() {
@@ -40,14 +40,14 @@ async function submitForm() {
     await api.put(`/todos/${form.value.id}`, {
       title: form.value.title,
       description: form.value.description || null,
-      status: form.value.status,
+      completed: form.value.completed,
       due_date: form.value.due_date || null,
     })
   } else {
     await api.post('/todos', {
       title: form.value.title,
       description: form.value.description || null,
-      status: form.value.status,
+      completed: form.value.completed,
       due_date: form.value.due_date || null,
     })
   }
@@ -83,11 +83,11 @@ onMounted(fetchTodos)
                  class="w-full border rounded-xl px-3 py-2" placeholder="Keyword..." />
         </div>
         <div>
-          <label class="block text-sm font-medium">Status</label>
-          <select v-model="status" class="border rounded-xl px-3 py-2">
+          <label class="block text-sm font-medium">Completed</label>
+          <select v-model="completed" class="border rounded-xl px-3 py-2">
             <option value="">All</option>
-            <option value="pending">Pending</option>
-            <option value="done">Done</option>
+            <option value=false>False</option>
+            <option value=true>True</option>
           </select>
         </div>
         <div>
@@ -108,9 +108,9 @@ onMounted(fetchTodos)
         <h2 class="font-semibold">{{ form.id ? 'Edit To-do' : 'New To-do' }}</h2>
         <div class="grid sm:grid-cols-2 gap-3">
           <input v-model="form.title" placeholder="Title" class="border rounded-xl px-3 py-2"/>
-          <select v-model="form.status" class="border rounded-xl px-3 py-2">
-            <option value="pending">Pending</option>
-            <option value="done">Done</option>
+          <select v-model="form.completed" class="border rounded-xl px-3 py-2">
+            <option value=false>False</option>
+            <option value=true>True</option>
           </select>
           <input v-model="form.due_date" type="date" class="border rounded-xl px-3 py-2"/>
           <input v-model="form.description" placeholder="Description (optional)" class="border rounded-xl px-3 py-2"/>
@@ -129,7 +129,7 @@ onMounted(fetchTodos)
           <thead class="bg-gray-100 text-sm">
             <tr>
               <th class="text-left p-3">Title</th>
-              <th class="text-left p-3">Status</th>
+              <th class="text-left p-3">Completed</th>
               <th class="text-left p-3">Due</th>
               <th class="text-left p-3">Actions</th>
             </tr>
@@ -137,7 +137,7 @@ onMounted(fetchTodos)
           <tbody>
             <tr v-for="t in todos" :key="t.id" class="border-t">
               <td class="p-3">{{ t.title }}</td>
-              <td class="p-3 capitalize">{{ t.status }}</td>
+              <td class="p-3 capitalize">{{ t.completed }}</td>
               <td class="p-3">{{ t.due_date ?? '—' }}</td>
               <td class="p-3 flex gap-2">
                 <button @click="editRow(t)" class="px-3 py-1 rounded-xl border">Edit</button>
