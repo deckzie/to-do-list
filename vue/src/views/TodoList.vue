@@ -35,9 +35,9 @@
   function loadPage(page) {
     const params = {
       page,
-      per_page: perPage.value,
       search: searchQuery.value,
-      completed: statusFilter.value
+      completed: statusFilter.value,
+      per_page: perPage.value,
     };
 
     store.dispatch('getTodos', params).then(() => {
@@ -90,10 +90,8 @@
     
     <!-- search and filter -->
     <SearchFilter
-      :searchQuery="searchQuery"
-      :statusFilter="statusFilter"
-      @update:searchQuery="value => (searchQuery.value = value)"
-      @update:statusFilter="value => (statusFilter.value = value)"
+      v-model:searchQuery="searchQuery"
+      v-model:statusFilter="statusFilter"
     />
 
     <!-- Number of items -->
