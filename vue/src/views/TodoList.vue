@@ -7,11 +7,14 @@
   import TodoForm from '../components/TodoForm.vue';
   import Pagination from '../components/Pagination.vue';
   import SearchFilter from '../components/SearchFilter.vue';
+  import { useRouter } from 'vue-router';
 
   const showForm = ref(false);
   const selectedTodo = ref(null);
+  const showProfileMenu = ref(false);
 
   const store = useStore();
+  const router = useRouter();
 
   const todos = computed(() => store.state.todos.data);
   const pagination = computed(() => store.state.todos.meta);
@@ -79,12 +82,32 @@
     };
     store.dispatch('updateTodo', updatedTodo);
   }
+
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  function toggleProfileMenu() {
+    showProfileMenu.value = !showProfileMenu.value;
+  }
+
+  function logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    router.push('/login');
+  }
 </script>
 
 <template>
   <div class="w-7/10 mx-auto mt-5 space-y-3">
-    <h1 class="text-2xl font-bold text-center text-green-700 mb-6">TodoList</h1>
-    
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-bold text-center text-green-700">{{ user.name }}'s Todo List</h1>
+      <div class="relative">
+        <button @click="toggleProfileMenu" class="px-4 py-2 bg-gray-200 rounded-md">{{ user.name }}</button>
+        <div v-if="showProfileMenu" class="absolute top-full left-0 mt-2 bg-white shadow-md rounded-md">
+          <button @click="logout" class="block w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100">Log Out</button>
+        </div>
+      </div>
+    </div>
+
     <!-- add Todo button -->
     <button @click="addTodo" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
       Add Todo
