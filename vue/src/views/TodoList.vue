@@ -114,11 +114,11 @@
     <div
       v-for="(todo, index) in todos"
       :key="index"
-      class="flex items-center justify-between bg-white shadow p-4 rounded-lg cursor-pointer"
-      @click="editTodo(index)"
+      class="flex items-center justify-between bg-white shadow p-4 rounded-lg"
+      @click="toggleCompleted(todo)"
     >
       <!-- Left side: checkbox + title -->
-      <div class="flex items-center space-x-3 flex-1 overflow-hidden">
+      <div class="flex items-center space-x-3 flex-1 overflow-hidden cursor-pointer">
         <input
           type="checkbox"
           :checked="todo.completed"
@@ -138,10 +138,10 @@
 
       <!-- Right side: buttons -->
       <div class="flex space-x-1 flex-shrink-0" @click.stop>
-        <button @click="editTodo(index)" class="text-gray-500 hover:text-gray-700" title="Edit task">
+        <button @click="editTodo(index)" class="text-gray-500 hover:text-gray-700 cursor-pointer" title="Edit task">
           <PencilSquareIcon class="w-5 h-5" />
         </button>
-        <button @click="deleteTodo(index)" class="text-gray-500 hover:text-gray-700" title="Delete task">
+        <button @click="deleteTodo(index)" class="text-gray-500 hover:text-gray-700 cursor-pointer" title="Delete task">
           <TrashIcon class="w-5 h-5" />
         </button>
       </div>
