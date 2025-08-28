@@ -34,4 +34,41 @@ class UserController extends Controller
         $user->delete();
         return response()->noContent();
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
+        ]);
+
+        return response()->json($user, 201);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (!auth()->attempt($credentials)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        $user = auth()->user();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
+    }
 }
