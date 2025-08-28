@@ -25,7 +25,6 @@
     loadPage(1); // reset to page 1 when filters or perPage change
   });
 
-
   onMounted(() => {
     store.dispatch('getTodos').then(() => {
       console.log('Fetched Todos:', todos.value); // Print todos after fetching
@@ -44,7 +43,6 @@
       console.log('Fetched with filters:', params);
     });
   }
-
 
   function deleteTodo(index) {
     const todoId = todos.value[index].id;
@@ -71,7 +69,6 @@
     } else {
       store.dispatch('addTodo', todoData);
     }
-
     showForm.value = false;
   }
 
@@ -88,6 +85,11 @@
   <div class="w-7/10 mx-auto mt-5 space-y-3">
     <h1 class="text-2xl font-bold text-center text-green-700 mb-6">TodoList</h1>
     
+    <!-- add Todo button -->
+    <button @click="addTodo" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+      Add Todo
+    </button>
+
     <!-- search and filter -->
     <SearchFilter
       v-model:searchQuery="searchQuery"
@@ -108,7 +110,6 @@
         <option value="50">50</option>
       </select>
     </div>
-
 
     <div
       v-for="(todo, index) in todos"
@@ -150,7 +151,6 @@
       <Pagination :pagination="pagination" @page-change="loadPage" />
     </div>
   </div>
-
 
   <TodoForm
     v-if="showForm"

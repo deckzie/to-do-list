@@ -126,8 +126,6 @@ const store = createStore({
             const index = state.todos.data.findIndex(t => t.id === updated.id);
             if (index !== -1) state.todos.data[index] = updated;
         }
-
-
     },
     modules: {}
 

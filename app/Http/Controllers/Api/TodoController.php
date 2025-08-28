@@ -41,8 +41,14 @@ class TodoController extends Controller
             'completed' => 'boolean',
         ]);
 
-        return Todo::create($validated);
+        // Assign a default user_id for the temporary logged-in user
+        $validated['user_id'] = 1; // Replace 1 with the ID of your temporary user
+        
+        $todo = Todo::create($validated);
+
+        return response()->json($todo, 201);
     }
+
 
     public function show(Todo $todo)
     {
