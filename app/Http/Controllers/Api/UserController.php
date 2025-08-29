@@ -59,8 +59,14 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'No user found with this email'], 404);
+        }
+
         if (!auth()->attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'Incorrect password'], 401);
         }
 
         $user = auth()->user();
