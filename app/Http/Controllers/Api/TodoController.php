@@ -9,7 +9,7 @@ class TodoController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 8);
+        $perPage = $request->get('per_page', 10);
 
         // Get todos of the authenticated user
         $query = $request->user()->todos();
