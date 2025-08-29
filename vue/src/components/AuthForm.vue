@@ -123,14 +123,6 @@ async function handleSubmit() {
 <template>
   <div class="max-w-sm mx-auto mt-10">
     <h2 class="text-xl font-bold mb-4">{{ title }}</h2>
-    <!-- <div v-for="field in fields" :key="field.model">
-      <input
-        :type="field.type"
-        :placeholder="field.placeholder"
-        class="w-full mb-2 p-2 border rounded"
-        v-model="formState[field.model]"
-      />
-    </div> -->
 
     <div v-for="field in fields" :key="field.model" class="mb-4">
     <input
@@ -147,7 +139,7 @@ async function handleSubmit() {
     </div>
 
 
-    <button @click="handleSubmit" class="w-full bg-green-600 text-white py-2 rounded">
+    <button @click="handleSubmit" class="w-full bg-green-600 text-white py-2 rounded cursor-pointer">
       {{ actionLabel }}
     </button>
     <p v-if="error" class="text-red-500 mt-2">{{ error }}</p>
