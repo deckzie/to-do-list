@@ -179,6 +179,7 @@
     v-if="showForm"
     :todo="selectedTodo"
     @submit="handleSubmit"
+    @close="showForm = false"
   />
 </template>
 
