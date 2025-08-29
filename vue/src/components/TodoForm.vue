@@ -59,7 +59,7 @@ function handleSubmit() {
 
       <div class="flex justify-end space-x-2">
         <button @click="emit('close')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-        <button @click="handleSubmit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+        <button @click="handleSubmit" :disabled="!title" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed">
           {{ props.todo ? 'Update' : 'Add' }}
         </button>
       </div>
