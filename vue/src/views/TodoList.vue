@@ -115,12 +115,17 @@
 
     <!-- search and filter -->
     <SearchFilter
-      v-model:searchQuery="searchQuery"
-      v-model:statusFilter="statusFilter"
+    v-model:searchQuery="searchQuery"
+    v-model:statusFilter="statusFilter"
     />
-
+    
+    <!-- Display message if no todos -->
+    <div v-if="todos.length === 0" class="text-center text-black mt-4">
+      You have no Todos yet.
+    </div>
+    
     <!-- Number of items -->
-    <div class="flex items-center justify-end mb-4">
+    <div v-if="todos.length > 0" class="flex items-center justify-end mb-4">
       <label for="perPage" class="mr-2 text-sm text-gray-600">Items per page:</label>
       <select
         id="perPage"
@@ -170,7 +175,7 @@
       </div>
     </div>
     <!-- Pagination Component -->
-    <div class=" mt-4">
+    <div v-if="todos.length > 0" class="mt-4">
       <Pagination :pagination="pagination" @page-change="loadPage" />
     </div>
   </div>
