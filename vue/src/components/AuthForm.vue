@@ -60,6 +60,12 @@ function validateField(model, value) {
 
 function updateField(model, value) {
   formState.value[model] = value;
+  validationErrors.value[model] = ''; // Clear the error for the field being updated
+
+  if (error.value) {
+    error.value = ''; // Clear the general error message
+  }
+
   if (props.checkEmail) {
       validateField(model, value);
       if (model === 'email' && !validationErrors.value.email) {
@@ -72,19 +78,45 @@ function hasValidationErrors() {
   return Object.values(validationErrors.value).some(error => error);
 }
 
+function hasEmptyFields() {
+  return !formState.value.email || !formState.value.password;
+}
+
 async function handleSubmit() {
-  if (hasValidationErrors()) {
-    error.value = 'Please fix the errors before submitting.';
+  if (hasEmptyFields()) {
+    error.value = 'Please fill in both email and password.';
     return;
   }
 
   try {
+    console.log("try")
     await props.onSubmit(formState.value);
+    console.log("submit")
+
     router.push('/');
+    console.log("push")
   } catch (err) {
-    error.value = props.errorMessage;
+            console.log("catch")
+
+    if (err.response?.data?.field && err.response?.data?.message) {
+      validationErrors.value[err.response.data.field] = err.response.data.message;
+        console.log("if")
+    } else if (err.response?.status === 422 && err.response?.data?.errors) {
+        console.log("else if")
+
+        const errors = err.response.data.errors;
+        for (const field in errors) {
+            validationErrors.value[field] = errors[field][0];
+        }
+    }
+    else {
+                console.log("else")
+
+      error.value = props.errorMessage;
+    }
   }
 }
+
 
 </script>
 

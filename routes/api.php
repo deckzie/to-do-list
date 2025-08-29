@@ -17,10 +17,17 @@ Route::post('/login', function (Request $request) {
 
     $user = User::where('email', $request->email)->first();
 
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        \Log::error('Invalid credentials for email: ' . $request->email);
+    if (! $user) {
+        \Log::error('Invalid email: ' . $request->email);
         throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
+            'email' => ['The provided email does not exist.'],
+        ]);
+    }
+
+    if (! Hash::check($request->password, $user->password)) {
+        \Log::error('Invalid password for email: ' . $request->email);
+        throw ValidationException::withMessages([
+            'password' => ['The provided password is incorrect.'],
         ]);
     }
 

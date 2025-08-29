@@ -47,6 +47,7 @@ const store = createStore({
                 commit('setUser', response.data.user);
             } catch (error) {
                 console.error("Error logging in user:", error);
+                throw error;
             }
         },
         async getTodo({commit}, todoId) {
