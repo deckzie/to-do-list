@@ -42,3 +42,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::apiResource('users', UserController::class)->withoutMiddleware('auth');
+
+Route::post('/check-email', [UserController::class, 'checkEmail']);

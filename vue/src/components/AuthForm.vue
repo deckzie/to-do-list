@@ -3,6 +3,24 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { defineProps } from 'vue';
+import axiosClient from '../axios'; // or wherever your axios instance lives
+import { debounce } from 'lodash';
+
+const validationErrors = ref({});
+const emailTaken = ref(false);
+
+const checkEmailAvailability = debounce(async (email) => {
+  try {
+    const response = await axiosClient.post('/check-email', { email });
+    emailTaken.value = response.data.exists;
+    validationErrors.value.email = emailTaken.value
+      ? 'This email is already taken.'
+      : '';
+  } catch (err) {
+    console.error('Error checking email:', err);
+  }
+}, 500);
+
 
 const props = defineProps({
   title: String,
@@ -20,7 +38,6 @@ const formState = ref({});
 const error = ref('');
 const router = useRouter();
 const store = useStore();
-const validationErrors = ref({});
 
 function validateField(model, value) {
   if (model === 'email') {
@@ -40,7 +57,12 @@ function validateField(model, value) {
 function updateField(model, value) {
   formState.value[model] = value;
   validateField(model, value);
+
+  if (model === 'email') {
+    checkEmailAvailability(value);
+  }
 }
+
 
 function hasValidationErrors() {
   return Object.values(validationErrors.value).some(error => error);

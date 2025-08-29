@@ -71,4 +71,13 @@ class UserController extends Controller
             'token' => $token,
         ]);
     }
+
+    public function checkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $exists = \App\Models\User::where('email', $request->email)->exists();
+
+        return response()->json(['exists' => $exists]);
+    }
+
 }
