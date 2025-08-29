@@ -99,7 +99,7 @@
 <template>
   <div class="w-7/10 mx-auto mt-5 space-y-3">
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold text-center text-green-700">{{ user.name }}'s Todo List</h1>
+      <h1 class="text-2xl font-bold text-center text-green-700">Todo List</h1>
       <div class="relative">
         <button @click="toggleProfileMenu" class="px-4 py-2 bg-gray-200 rounded-md">{{ user.name }}</button>
         <div v-if="showProfileMenu" class="absolute top-full left-0 mt-2 bg-white shadow-md rounded-md">
