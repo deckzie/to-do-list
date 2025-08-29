@@ -10,7 +10,9 @@ class TodoController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 8);
-        $query = Todo::query();
+
+        // Get todos of the authenticated user
+        $query = $request->user()->todos();
 
         if ($request->has('search')) {
             $search = $request->get('search');
@@ -27,7 +29,6 @@ class TodoController extends Controller
             }
         }
 
-
         return response()->json($query->paginate($perPage));
     }
 
@@ -41,9 +42,10 @@ class TodoController extends Controller
             'completed' => 'boolean',
         ]);
 
-        // Assign a default user_id for the temporary logged-in user
-        $validated['user_id'] = 1; // Replace 1 with the ID of your temporary user
+        // Assign the authenticated user's ID to the todo
+        $validated['user_id'] = $request->user()->id;
         
+        dump($validated);
         $todo = Todo::create($validated);
 
         return response()->json($todo, 201);

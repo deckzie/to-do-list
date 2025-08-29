@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 Route::post('/login', function (Request $request) {
-    \Log::info('Login Request:', $request->all());
 
     $request->validate([
         'email' => 'required|email',
@@ -41,6 +40,8 @@ Route::middleware('auth:sanctum')->get('/todos', function (Request $request) {
     return $request->user()->todos()->paginate($request->get('per_page', 10));
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('todos', TodoController::class);
+});
 
-Route::apiResource('todos', TodoController::class)->withoutMiddleware('auth');
 Route::apiResource('users', UserController::class)->withoutMiddleware('auth');
