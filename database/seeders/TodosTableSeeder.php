@@ -13,6 +13,10 @@ class TodosTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Todo::factory()->count(500)->create();
+        $specificUserId = 15; // Replace with the desired user ID
+
+        Todo::factory()->count(100)->create([
+            'user_id' => $specificUserId,
+        ]);
     }
 }
