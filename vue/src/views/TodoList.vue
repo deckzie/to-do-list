@@ -1,5 +1,5 @@
 <script setup>
-  import { PencilSquareIcon, TrashIcon, PlusIcon} from '@heroicons/vue/24/solid';
+  import { PencilSquareIcon, TrashIcon, PlusIcon, UserIcon} from '@heroicons/vue/24/solid';
   import { onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { ref } from 'vue';
@@ -101,7 +101,9 @@
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-2xl font-bold text-center text-green-700">Todo List</h1>
       <div class="relative">
-        <button @click="toggleProfileMenu" class="px-4 py-2 bg-gray-200 rounded-md">{{ user.name }}</button>
+        <button @click="toggleProfileMenu" class="cursor-pointer flex text-gray-500 pr-4 pl-3 py-2 rounded-lg hover:bg-gray-100">
+          <UserIcon class="w-5 h-5 mt-0.5 mr-1 text-gray-500" />{{ user.name }}
+        </button>
         <div v-if="showProfileMenu" class="absolute top-full left-0 mt-2 bg-white shadow-md rounded-md">
           <button @click="logout" class="block w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100">Log Out</button>
         </div>
