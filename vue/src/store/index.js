@@ -3,6 +3,7 @@ import axiosClient from "../axios";
 
 const store = createStore({
     state: {
+        user: null,
         todos: {
             data: [],
             meta: {
@@ -19,6 +20,27 @@ const store = createStore({
     },
     getters: {},
     actions: {
+        async registerUser({ commit }, userData) {
+            try {
+                const response = await axiosClient.post('/users', userData);
+                // Assuming the backend returns the created user directly
+                localStorage.setItem('user', JSON.stringify(response.data));
+                commit('setUser', response.data);
+            } catch (error) {
+                console.error("Error registering user:", error);
+                throw error; // Re-throw the error to handle it in the component
+            }
+        },
+        async loginUser({ commit }, credentials) {
+            try {
+                const response = await axiosClient.post('/login', credentials);
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+                commit('setUser', response.data.user);
+            } catch (error) {
+                console.error("Error logging in user:", error);
+            }
+        },
         async getTodo({commit}, todoId) {
             commit('setLoading', true);
             try {
@@ -93,6 +115,9 @@ const store = createStore({
         }
     },
     mutations: {
+        setUser(state, user) {
+            state.user = user;
+        },
         setLoading(state, loading) {
             state.todos.loading = loading;
         },
