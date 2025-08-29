@@ -62,7 +62,7 @@ function updateField(model, value) {
   formState.value[model] = value;
   if (props.checkEmail) {
       validateField(model, value);
-      if (model === 'email') {
+      if (model === 'email' && !validationErrors.value.email) {
           checkEmailAvailability(value);
       }
   }
