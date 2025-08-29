@@ -130,7 +130,7 @@ async function handleSubmit() {
     </div>
 
 
-    <button @click="handleSubmit" class="w-full bg-green-600 text-white py-2 rounded cursor-pointer">
+    <button @click="handleSubmit" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md cursor-pointer">
       {{ actionLabel }}
     </button>
     <p v-if="error" class="text-red-500 mt-2">{{ error }}</p>
