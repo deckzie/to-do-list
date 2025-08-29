@@ -30,7 +30,6 @@
 
   onMounted(() => {
     store.dispatch('getTodos').then(() => {
-      console.log('Fetched Todos:', todos.value); // Print todos after fetching
     });
   });
 
@@ -42,20 +41,16 @@
       per_page: perPage.value,
     };
 
-    store.dispatch('getTodos', params).then(() => {
-      console.log('Fetched with filters:', params);
-    });
+    store.dispatch('getTodos', params);
   }
 
   function deleteTodo(index) {
     const todoId = todos.value[index].id;
-    console.log('Deleting todo with ID:', todoId);
     store.dispatch('deleteTodo', todoId);
   }
 
   function editTodo(index) {
     selectedTodo.value = todos.value[index];
-    console.log('Editing todo:', selectedTodo.value);
     showForm.value = true;
   }
 
@@ -65,7 +60,6 @@
   }
 
   function handleSubmit(todoData) {
-    console.log('Submitting todo:', todoData);
 
     if (todoData.id) {
       store.dispatch('updateTodo', todoData);

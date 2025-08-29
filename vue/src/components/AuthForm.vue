@@ -89,20 +89,13 @@ async function handleSubmit() {
   }
 
   try {
-    console.log("try")
     await props.onSubmit(formState.value);
-    console.log("submit")
 
     router.push('/');
-    console.log("push")
   } catch (err) {
-            console.log("catch")
-
     if (err.response?.data?.field && err.response?.data?.message) {
       validationErrors.value[err.response.data.field] = err.response.data.message;
-        console.log("if")
     } else if (err.response?.status === 422 && err.response?.data?.errors) {
-        console.log("else if")
 
         const errors = err.response.data.errors;
         for (const field in errors) {
@@ -110,8 +103,6 @@ async function handleSubmit() {
         }
     }
     else {
-                console.log("else")
-
       error.value = props.errorMessage;
     }
   }
