@@ -1,5 +1,5 @@
 <script setup>
-  import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
+  import { PencilSquareIcon, TrashIcon, PlusIcon} from '@heroicons/vue/24/solid';
   import { onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { ref } from 'vue';
@@ -109,8 +109,8 @@
     </div>
 
     <!-- add Todo button -->
-    <button @click="addTodo" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
-      Add Todo
+    <button @click="addTodo" class="flex font-bold cursor-pointer fixed bottom-5 right-5 px-4 py-4 pr-5 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600">
+      <PlusIcon class="w-6 h-6 pr-1" /> New Todo
     </button>
 
     <!-- search and filter -->
@@ -151,7 +151,7 @@
           type="checkbox"
           :checked="todo.completed"
           @change.stop="toggleCompleted(todo)"
-          class="form-checkbox h-5 w-5 text-green-500 flex-shrink-0"
+          class="form-checkbox h-5 w-5 text-green-500 flex-shrink-0 cursor-pointer"
         />
         <span
           class="truncate w-full"
