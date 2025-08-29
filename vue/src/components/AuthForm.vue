@@ -121,14 +121,14 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="max-w-sm mx-auto mt-10">
-    <h2 class="text-xl font-bold mb-4">{{ title }}</h2>
+  <div class="max-w-sm mx-auto mt-50">
+    <h2 class="text-xl font-bold mb-4 text-center text-green-600">{{ title }}</h2>
 
     <div v-for="field in fields" :key="field.model" class="mb-4">
     <input
         :type="field.type"
         :placeholder="field.placeholder"
-        class="w-full p-2 border rounded"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
         :class="{ 'border-red-500': validationErrors[field.model] }"
         :value="formState[field.model] || ''"
         @input="updateField(field.model, $event.target.value)"
