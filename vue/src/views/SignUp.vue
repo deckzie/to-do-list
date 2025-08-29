@@ -22,6 +22,7 @@ function registerUser({ name, email, password }) {
     action-label="Sign Up"
     error-message="Sign up failed"
     :on-submit="registerUser"
+    :check-email="true"
   />
   <p class="text-center mt-4">
     Already have an account? <router-link to="/login" class="text-blue-500">Log in</router-link>

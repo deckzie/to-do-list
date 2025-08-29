@@ -32,6 +32,10 @@ const props = defineProps({
     type: Object,
     default: null, // e.g. { text: "Don't have an account?", to: "/signup", label: "Sign Up" }
   },
+  checkEmail: {
+    type: Boolean,
+    default: false, // Only enable email check when explicitly set
+  },
 });
 
 const formState = ref({});
@@ -58,7 +62,7 @@ function updateField(model, value) {
   formState.value[model] = value;
   validateField(model, value);
 
-  if (model === 'email') {
+  if (model === 'email' && props.checkEmail) {
     checkEmailAvailability(value);
   }
 }
