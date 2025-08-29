@@ -26,6 +26,14 @@ const store = createStore({
                 // Assuming the backend returns the created user directly
                 localStorage.setItem('user', JSON.stringify(response.data));
                 commit('setUser', response.data);
+
+                // Automatically log in the user after registration
+                const loginResponse = await axiosClient.post('/login', {
+                    email: userData.email,
+                    password: userData.password
+                });
+                localStorage.setItem('token', loginResponse.data.token);
+                commit('setUser', loginResponse.data.user);
             } catch (error) {
                 console.error("Error registering user:", error);
                 throw error; // Re-throw the error to handle it in the component
