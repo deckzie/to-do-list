@@ -37,7 +37,7 @@ function handleSubmit() {
 <template>
   <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @click.self="emit('close')">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative">
-      <button @click="emit('close')" class="absolute top-3 right-4 text-gray-500 hover:text-gray-700">
+      <button @click="emit('close')" class="cursor-pointer absolute top-3 right-4 text-gray-500 hover:text-gray-700">
         &times;
       </button>
       <h2 class="text-xl font-bold mb-4">{{ props.todo ? 'Edit Todo' : 'Add Todo' }}</h2>
@@ -61,8 +61,8 @@ function handleSubmit() {
       </label>
 
       <div class="flex justify-end space-x-2">
-        <button @click="emit('close')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-        <button @click="handleSubmit" :disabled="!title && !description" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed">
+        <button @click="emit('close')" class="cursor-pointer px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+        <button @click="handleSubmit" :disabled="!title && !description" class="cursor-pointer px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed">
           {{ props.todo ? 'Update' : 'Add' }}
         </button>
       </div>

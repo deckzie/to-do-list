@@ -99,7 +99,7 @@
           <UserIcon class="w-5 h-5 mt-0.5 mr-1 text-gray-500" />{{ user.name }}
         </button>
         <div v-if="showProfileMenu" class="absolute top-full left-0 mt-2 bg-white shadow-md rounded-md">
-          <button @click="logout" class="block w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100">Log Out</button>
+          <button @click="logout" class="cursor-pointer block w-full px-4 py-2 text-center text-red-600 hover:bg-gray-100">Log Out</button>
         </div>
       </div>
     </div>
