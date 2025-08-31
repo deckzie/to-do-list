@@ -66,11 +66,3 @@ This is a web application for managing your to-do list. It includes features lik
 ### Accessing the Application
 
 -   Open your browser and navigate to `http://localhost:8000` for the backend or the port shown for the frontend.
-
-## Contributing
-
-Feel free to fork this repository and submit pull requests.
-
-## License
-
-This project is licensed under the MIT License.
