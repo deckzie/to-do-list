@@ -88,12 +88,23 @@
     localStorage.removeItem('token');
     router.push('/login');
   }
+
+  function resetPage() {
+    searchQuery.value = '';
+    statusFilter.value = '';
+    loadPage(1); // Load the first page after resetting
+  }
 </script>
 
 <template>
   <div class="w-7/10 mx-auto mt-5">
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold text-center text-green-700">Todo List</h1>
+      <h1
+        class="text-2xl font-bold text-center text-green-700 cursor-pointer"
+        @click="resetPage()"
+      >
+        Todo List
+      </h1>
       <div class="relative">
         <button @click="toggleProfileMenu" class="cursor-pointer flex text-gray-500 pr-4 pl-3 py-2 rounded-lg hover:bg-gray-100">
           <UserIcon class="w-5 h-5 mt-0.5 mr-1 text-gray-500" />{{ user.name }}
@@ -105,7 +116,7 @@
         >
           <button
             @click="logout"
-            class="cursor-pointer block w-full px-4 py-2 text-center text-red-600 hover:bg-gray-100"
+            class="cursor-pointer block w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100"
           >
             Log Out
           </button>

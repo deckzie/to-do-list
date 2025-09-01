@@ -40,22 +40,22 @@ function handleSubmit() {
       <button @click="emit('close')" class="cursor-pointer absolute top-3 right-4 text-gray-500 hover:text-gray-700">
         &times;
       </button>
-      <h2 class="text-xl font-bold mb-4">{{ props.todo ? 'Edit Todo' : 'Add Todo' }}</h2>
+      <!-- <h2 class="text-xl font-bold mb-4">{{ props.todo ? 'Edit Todo' : 'Add Todo' }}</h2> -->
 
       <input
         v-model="title"
         type="text"
         placeholder="Title"
-        class="w-full p-2 border border-gray-300 rounded mb-4"
+        class="w-full font-bold text-lg mb-4 focus:outline-none"
       />
 
       <textarea
         v-model="description"
         placeholder="Description"
-        class="w-full p-2 border border-gray-300 rounded mb-4"
+        class="w-full pb-20 focus:outline-none"
       ></textarea>
 
-      <label class="flex items-center space-x-2 mb-4">
+      <label class="flex items-center space-x-2">
         <input type="checkbox" v-model="completed" class="form-checkbox h-5 w-5 text-green-500" />
         <span>Completed</span>
       </label>
