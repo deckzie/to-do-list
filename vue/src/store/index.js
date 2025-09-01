@@ -110,16 +110,30 @@ const store = createStore({
                 });
         },
         addTodo({ commit }, todoData) {
+            commit('setLoading', true);
             axiosClient.post('/todos', todoData)
                 .then(({ data }) => {
                     commit('addTodo', data);
+                })
+                .catch(error => {
+                    console.error("Error adding todo:", error);
+                })
+                .finally(() => {
+                    commit('setLoading', false);
                 });
         },
 
         updateTodo({ commit }, todoData) {
+            commit('setLoading', true);
             axiosClient.put(`/todos/${todoData.id}`, todoData)
                 .then(({ data }) => {
                     commit('updateTodo', data);
+                })
+                .catch(error => {
+                    console.error("Error updating todo:", error);
+                })
+                .finally(() => {
+                    commit('setLoading', false);
                 });
         }
     },
