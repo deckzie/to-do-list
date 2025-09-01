@@ -65,4 +65,4 @@ This is a web application for managing your to-do list. It includes features lik
 
 ### Accessing the Application
 
--   Open your browser and navigate to `http://localhost:8000` for the backend or the port shown for the frontend.
+-   Open your browser and navigate to the port shown for the frontend.
