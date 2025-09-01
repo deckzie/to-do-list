@@ -45,7 +45,6 @@ class TodoController extends Controller
         // Assign the authenticated user's ID to the todo
         $validated['user_id'] = $request->user()->id;
         
-        dump($validated);
         $todo = Todo::create($validated);
 
         return response()->json($todo, 201);
