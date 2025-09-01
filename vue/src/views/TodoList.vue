@@ -91,7 +91,7 @@
 </script>
 
 <template>
-  <div class="w-7/10 mx-auto mt-5 space-y-3">
+  <div class="w-7/10 mx-auto mt-5">
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-2xl font-bold text-center text-green-700">Todo List</h1>
       <div class="relative">
@@ -123,12 +123,7 @@
     v-model:searchQuery="searchQuery"
     v-model:statusFilter="statusFilter"
     />
-    
-    <!-- Display message if no todos -->
-    <div v-if="todos.length === 0" class="text-center text-black mt-4">
-      You have no Todos yet.
-    </div>
-    
+
     <!-- Number of items -->
     <div v-if="todos.length > 0" class="flex items-center justify-end mb-4">
       <label for="perPage" class="mr-2 text-sm text-gray-600">Items per page:</label>
@@ -143,42 +138,58 @@
         <option value="50">50</option>
       </select>
     </div>
+    
+    <!-- Loading Indicator -->
+    <div v-if="loading" class="flex justify-center items-center h-20">
+      <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
+    </div>
 
-    <div
-      v-for="(todo, index) in todos"
-      :key="index"
-      class="flex items-center justify-between bg-white shadow p-4 rounded-lg"
-      @click="toggleCompleted(todo)"
-    >
-      <!-- Left side: checkbox + title -->
-      <div class="flex items-center space-x-3 flex-1 overflow-hidden cursor-pointer">
-        <input
-          type="checkbox"
-          :checked="todo.completed"
-          @change.stop="toggleCompleted(todo)"
-          class="form-checkbox h-5 w-5 text-green-500 flex-shrink-0 cursor-pointer"
-        />
-        <span
-          class="truncate w-full"
-          :class="{
-            'line-through text-gray-400': todo.completed,
-            'text-gray-800': !todo.completed
-          }"
-        >
-          {{ todo.title }}
-        </span>
+    <!-- Todo List Content -->
+    <div v-else class="space-y-3">
+      <!-- Display message if no todos -->
+      <div v-if="todos.length === 0" class="text-center text-black mt-4">
+        You have no Todos yet.
       </div>
 
-      <!-- Right side: buttons -->
-      <div class="flex space-x-1 flex-shrink-0" @click.stop>
-        <button @click="editTodo(index)" class="text-gray-500 hover:text-gray-700 cursor-pointer pl-2" title="Edit task">
-          <PencilSquareIcon class="w-5 h-5" />
-        </button>
-        <button @click="deleteTodo(index)" class="text-gray-500 hover:text-gray-700 cursor-pointer" title="Delete task">
-          <TrashIcon class="w-5 h-5" />
-        </button>
+      <div
+        v-for="(todo, index) in todos"
+        :key="index"
+        class="flex items-center justify-between bg-white shadow p-4 rounded-lg"
+        @click="toggleCompleted(todo)"
+      >
+        <!-- Left side: checkbox + title -->
+        <div class="flex items-center space-x-3 flex-1 overflow-hidden cursor-pointer">
+          <input
+            type="checkbox"
+            :checked="todo.completed"
+            @change.stop="toggleCompleted(todo)"
+            class="form-checkbox h-5 w-5 text-green-500 flex-shrink-0 cursor-pointer"
+          />
+          <span
+            class="truncate w-full"
+            :class="{
+              'line-through text-gray-400': todo.completed,
+              'text-gray-800': !todo.completed
+            }"
+          >
+            {{ todo.title }}
+          </span>
+        </div>
+  
+        <!-- Right side: buttons -->
+        <div class="flex space-x-1 flex-shrink-0" @click.stop>
+          <button @click="editTodo(index)" class="text-gray-500 hover:text-gray-700 cursor-pointer pl-2" title="Edit task">
+            <PencilSquareIcon class="w-5 h-5" />
+          </button>
+          <button @click="deleteTodo(index)" class="text-gray-500 hover:text-gray-700 cursor-pointer" title="Delete task">
+            <TrashIcon class="w-5 h-5" />
+          </button>
+        </div>
       </div>
     </div>
+
+    
+
     <!-- Pagination Component -->
     <div v-if="todos.length > 0" class="mt-4">
       <Pagination :pagination="pagination" @page-change="loadPage" />
