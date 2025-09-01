@@ -8,6 +8,7 @@
   import Pagination from '../components/Pagination.vue';
   import SearchFilter from '../components/SearchFilter.vue';
   import { useRouter } from 'vue-router';
+  import ProfileDropdown from '../components/ProfileDropdown.vue';
 
   const showForm = ref(false);
   const selectedTodo = ref(null);
@@ -105,29 +106,10 @@
       >
         Todo List
       </h1>
-      <div class="relative">
-        <button @click="toggleProfileMenu" class="cursor-pointer flex text-gray-500 pr-4 pl-3 py-2 rounded-lg hover:bg-gray-100">
-          <UserIcon class="w-5 h-5 mt-0.5 mr-1 text-gray-500" />{{ user.name }}
-        </button>
-        <!-- Log Out Dropdown -->
-        <div
-          v-if="showProfileMenu"
-          class="absolute top-full left-0 mt-2 bg-white shadow-md rounded-md z-50"
-        >
-          <button
-            @click="logout"
-            class="cursor-pointer block w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100"
-          >
-            Log Out
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <!-- add Todo button -->
-    <button @click="addTodo" class="flex font-bold cursor-pointer fixed bottom-5 right-5 px-4 py-4 pr-5 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600">
-      <PlusIcon class="w-6 h-6 pr-1" /> New Todo
-    </button>
+      <!-- Profile Menu -->
+      <ProfileDropdown :user="user" @logout="logout" />
+    </div>
 
     <!-- search and filter -->
     <SearchFilter
@@ -199,8 +181,11 @@
         </div>
       </div>
     </div>
-
     
+    <!-- add Todo button -->
+    <button @click="addTodo" class="flex font-bold cursor-pointer fixed bottom-5 right-5 px-4 py-4 pr-5 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600">
+      <PlusIcon class="w-6 h-6 pr-1" /> New Todo
+    </button>
 
     <!-- Pagination Component -->
     <div v-if="todos.length > 0" class="mt-4">
