@@ -50,15 +50,11 @@ This is a web application for managing your to-do list. It includes features lik
 
 ### Frontend Setup
 
-1. Navigate to the `vue` directory:
-    ```bash
-    cd vue
-    ```
-2. Install Node.js dependencies:
+1. Install Node.js dependencies:
     ```bash
     npm install
     ```
-3. Start the development server:
+2. Start the development server:
     ```bash
     npm run dev
     ```
