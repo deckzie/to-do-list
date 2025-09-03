@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->boolean('completed')->default(false);
             $table->index(['user_id', 'completed']);
+            $table->string('category')->default('Personal');
         });
     }
 
