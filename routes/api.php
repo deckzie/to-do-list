@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -51,3 +52,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('users', UserController::class)->withoutMiddleware('auth');
 
 Route::post('/check-email', [UserController::class, 'checkEmail']);
+
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::post('/categories', [CategoryController::class, 'store']);

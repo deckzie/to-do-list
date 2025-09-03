@@ -1,43 +1,3 @@
-<script setup>
-import { ref, watch } from 'vue';
-
-const props = defineProps({
-  todo: {
-    type: Object,
-    default: null
-  }
-});
-const emit = defineEmits(['submit', 'close']);
-
-const title = ref('');
-const description = ref('');
-const completed = ref(false);
-const category = ref('HomeWork');
-
-watch(() => props.todo, (newTodo) => {
-  if (newTodo) {
-    title.value = newTodo.title || '';
-    description.value = newTodo.description || '';
-    completed.value = newTodo.completed || false;
-    category.value = newTodo.category || 'HomeWork';
-  } else {
-    title.value = '';
-    description.value = '';
-    completed.value = false;
-    category.value = 'HomeWork';
-  }
-}, { immediate: true });
-
-function handleSubmit() {
-  emit('submit', {
-    id: props.todo?.id,
-    title: title.value,
-    description: description.value,
-    completed: completed.value,
-    category: category.value,
-  });
-}
-</script>
 <template>
   <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @click.self="emit('close')">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative">
@@ -55,16 +15,41 @@ function handleSubmit() {
       ></textarea>
 
       <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 py-1">
-        <select
-          v-model="category"
-          class="w-full sm:w-auto px-2 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          <option value="HomeWork">Homework</option>
-          <option value="Housework">Housework</option>
-          <option value="Work">Work</option>
-          <option value="Personal">Personal</option>
-          <option value="Errands">Errands</option>
-        </select>
+        <div class="flex items-center w-full space-x-2 relative">
+          <button
+            @click="toggleCategoryDropdown"
+            class="px-2 pb-2 pt-1 rounded-md text-xs bg-gray-400 text-white hover:bg-gray-500"
+            title="Add Category"
+          >Add Category +</button>
+          <!-- Category Dropdown -->
+          <div v-if="showAddCategory" class="absolute left-0 top-10 z-50 w-64 bg-white border border-gray-200 rounded shadow-lg">
+            <div class="max-h-40 overflow-y-auto">
+              <div
+                v-for="cat in categories"
+                :key="cat.id"
+                @click="selectCategory(cat.id)"
+                class="px-4 py-2 cursor-pointer hover:bg-green-100"
+                :class="{'bg-green-50 font-bold text-green-600': category === cat.id}"
+              >
+                {{ cat.name }}
+              </div>
+              <div v-if="!categories.length" class="px-4 py-2 text-gray-500">No categories yet.</div>
+            </div>
+            <div class="px-2 py-2 flex gap-2 items-center">
+              <input
+                v-model="newCategory"
+                @keyup.enter="addCategory"
+                type="text"
+                placeholder="New category"
+                class="flex-1 px-2 py-1 rounded text-sm"
+              />
+              <button
+                @click="addCategory"
+                class="cursor-pointer px-3 py-1 rounded bg-green-500 text-white text-sm"
+              >Add</button>
+            </div>
+          </div>
+        </div>
 
         <label class="flex items-center space-x-2 text-sm">
           <input
@@ -76,7 +61,6 @@ function handleSubmit() {
         </label>
       </div>
 
-
       <div class="flex justify-end space-x-2">
         <button @click="emit('close')" class="cursor-pointer px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
         <button @click="handleSubmit" :disabled="!title && !description" class="cursor-pointer px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -86,3 +70,79 @@ function handleSubmit() {
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, watch, onMounted } from 'vue';
+import axios from 'axios';
+
+const props = defineProps({
+  todo: {
+    type: Object,
+    default: null
+  }
+});
+const emit = defineEmits(['submit', 'close']);
+
+const title = ref('');
+const description = ref('');
+const completed = ref(false);
+const category = ref('');
+const categories = ref([]);
+const showAddCategory = ref(false);
+const newCategory = ref('');
+
+watch(() => props.todo, (newTodo) => {
+  if (newTodo) {
+    title.value = newTodo.title || '';
+    description.value = newTodo.description || '';
+    completed.value = newTodo.completed || false;
+    category.value = newTodo.category_id || '';
+  } else {
+    title.value = '';
+    description.value = '';
+    completed.value = false;
+    category.value = '';
+  }
+}, { immediate: true });
+
+function handleSubmit() {
+  emit('submit', {
+    id: props.todo?.id,
+    title: title.value,
+    description: description.value,
+    completed: completed.value,
+    category_id: category.value,
+  });
+}
+
+async function fetchCategories() {
+  try {
+    const res = await axios.get('/api/categories');
+    categories.value = res.data;
+  } catch (e) {
+    categories.value = [];
+  }
+}
+
+async function addCategory() {
+  if (!newCategory.value.trim()) return;
+  try {
+    await axios.post('/api/categories', { name: newCategory.value });
+    newCategory.value = '';
+    await fetchCategories();
+  } catch (e) {
+    // handle error
+  }
+}
+
+function selectCategory(id) {
+  category.value = id;
+  showAddCategory.value = false;
+}
+
+function toggleCategoryDropdown() {
+  showAddCategory.value = !showAddCategory.value;
+}
+
+onMounted(fetchCategories);
+</script>
