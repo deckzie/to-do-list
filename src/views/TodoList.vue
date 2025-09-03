@@ -42,7 +42,7 @@
       search: searchQuery.value,
       completed: statusFilter.value,
       per_page: perPage.value,
-      category: categoryFilter.value,
+      category_id: categoryFilter.value,
     };
 
     store.dispatch('getTodos', params);

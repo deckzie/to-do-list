@@ -6,12 +6,12 @@
         type="text"
         placeholder="Search by title or description..."
         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
-        <button
+      />
+      <button
         v-if="localSearchQuery"
         @click="clearSearch"
         class="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-        >
+      >
         ✕
       </button>
     </div>
@@ -24,11 +24,13 @@
         class="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
       >
         <option value="">All</option>
-        <option value="HomeWork">HomeWork</option>
-        <option value="Housework">Housework</option>
-        <option value="Work">Work</option>
-        <option value="Personal">Personal</option>
-        <option value="Errands">Errands</option>
+        <option
+          v-for="cat in categories"
+          :key="cat.id"
+          :value="cat.id"
+        >
+          {{ cat.name }}
+        </option>
       </select>
     </div>
 
@@ -48,19 +50,24 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
 const props = defineProps({
   searchQuery: String,
   statusFilter: String,
-  categoryFilter: String,
+  categoryFilter: [String, Number],
 });
 
 const emit = defineEmits(['update:searchQuery', 'update:statusFilter', 'update:categoryFilter']);
 
+const store = useStore();
+
 const localSearchQuery = ref(props.searchQuery);
 const localStatusFilter = ref(props.statusFilter);
 const localCategoryFilter = ref(props.categoryFilter);
+
+const categories = ref([]);
 
 watch(localCategoryFilter, (newValue) => {
   emit('update:categoryFilter', newValue);
@@ -77,4 +84,17 @@ watch(localStatusFilter, (newValue) => {
 function clearSearch() {
   localSearchQuery.value = '';
 }
+
+onMounted(async () => {
+  await store.dispatch('getCategories');
+  categories.value = store.state.categories;
+});
+
+// Optionally, watch the store for changes to categories
+watch(
+  () => store.state.categories,
+  (newCategories) => {
+    categories.value = newCategories;
+  }
+);
 </script>

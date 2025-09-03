@@ -19,7 +19,7 @@
           <button
             @click="toggleCategoryDropdown"
             :class="[
-              'px-2 py-1 rounded-md text-xs',
+              'cursor-pointer px-2 py-1 rounded-md text-xs',
               category ? 'bg-green-600 text-white font-bold' : 'bg-gray-400 text-white',
               'hover:bg-green-700'
             ]"

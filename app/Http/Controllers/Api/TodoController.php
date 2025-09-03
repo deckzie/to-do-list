@@ -34,6 +34,10 @@ class TodoController extends Controller
             $query->where('category', 'like', "%{$category}%");
         }
 
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->get('category_id'));
+        }
+
         return response()->json($query->paginate($perPage));
     }
 
