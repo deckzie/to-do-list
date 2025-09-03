@@ -147,7 +147,7 @@
     <div v-else class="space-y-3">
       <!-- Display message if no todos -->
       <div v-if="todos.length === 0" class="text-center text-black mt-4">
-        <span v-if="searchQuery || statusFilter">No results found.</span>
+        <span v-if="searchQuery || statusFilter || categoryFilter">No results found.</span>
         <span v-else>You have no Todos yet.</span>
       </div>
 
