@@ -12,7 +12,7 @@ class TodoController extends Controller
         $perPage = $request->get('per_page', 10);
 
         // Get todos of the authenticated user
-        $query = $request->user()->todos();
+        $query = $request->user()->todos()->with('category');
 
         if ($request->has('search')) {
             $search = $request->get('search');
@@ -76,6 +76,7 @@ class TodoController extends Controller
         ]);
 
         $todo->update($validated);
+        $todo->load('category');
         return $todo;
     }
 

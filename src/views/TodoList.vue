@@ -76,9 +76,11 @@
   function toggleCompleted(todo) {
     const updatedTodo = {
       ...todo,
-      completed: !todo.completed // flip the boolean
+      completed: !todo.completed
     };
-    store.dispatch('updateTodo', updatedTodo);
+    store.dispatch('updateTodo', updatedTodo).then(() => {
+      store.dispatch('getTodos'); // Refresh the list to get category relation
+    });
   }
 
   const user = JSON.parse(localStorage.getItem('user'));
@@ -157,22 +159,34 @@
         @click="toggleCompleted(todo)"
       >
         <!-- Left side: checkbox + title -->
-        <div class="flex items-center space-x-3 flex-1 overflow-hidden cursor-pointer">
-          <input
-            type="checkbox"
-            :checked="todo.completed"
-            @change.stop="toggleCompleted(todo)"
-            class="form-checkbox h-5 w-5 text-green-500 flex-shrink-0 cursor-pointer"
-          />
-          <span
-            class="truncate w-full"
-            :class="{
-              'line-through text-gray-400': todo.completed,
-              'text-gray-800': !todo.completed
-            }"
-          >
-            {{ todo.title }}
-          </span>
+        <div class="flex flex-col flex-1 overflow-hidden cursor-pointer">
+          <div class="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              :checked="todo.completed"
+              @change.stop="toggleCompleted(todo)"
+              class="form-checkbox h-5 w-5 text-green-500 flex-shrink-0 cursor-pointer"
+            />
+            <div class="flex flex-col">
+              <span
+                class="truncate w-full"
+                :class="{
+                  'line-through text-gray-400': todo.completed,
+                  'text-gray-800': !todo.completed
+                }"
+              >
+                {{ todo.title }}
+              </span>
+              <!-- Category below title -->
+              <span
+                v-if="todo.category && todo.category.name"
+                class="inline-block max-w-max text-xs bg-green-500 text-white rounded-md px-2 py-0.5"
+              >
+                {{ todo.category.name }}
+              </span>
+
+            </div>
+          </div>
         </div>
   
         <!-- Right side: buttons -->
