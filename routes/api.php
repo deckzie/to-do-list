@@ -53,5 +53,4 @@ Route::apiResource('users', UserController::class)->withoutMiddleware('auth');
 
 Route::post('/check-email', [UserController::class, 'checkEmail']);
 
-Route::get('/categories', [CategoryController::class, 'index']);
-Route::post('/categories', [CategoryController::class, 'store']);
+Route::apiResource('categories', CategoryController::class);

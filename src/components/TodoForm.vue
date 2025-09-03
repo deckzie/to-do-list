@@ -25,7 +25,7 @@
           <div v-if="showAddCategory" class="absolute left-0 top-10 z-50 w-64 bg-white border border-gray-200 rounded shadow-lg">
             <div class="max-h-40 overflow-y-auto">
               <div
-                v-for="cat in categories"
+                v-for="cat in store.state.categories"
                 :key="cat.id"
                 @click="selectCategory(cat.id)"
                 class="px-4 py-2 cursor-pointer hover:bg-green-100"
@@ -33,7 +33,7 @@
               >
                 {{ cat.name }}
               </div>
-              <div v-if="!categories.length" class="px-4 py-2 text-gray-500">No categories yet.</div>
+              <div v-if="!store.state.categories.length" class="px-4 py-2 text-gray-500">No categories yet.</div>
             </div>
             <div class="px-2 py-2 flex gap-2 items-center">
               <input
@@ -73,13 +73,12 @@
 
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import axios from 'axios';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const props = defineProps({
-  todo: {
-    type: Object,
-    default: null
-  }
+  todo: { type: Object, default: null }
 });
 const emit = defineEmits(['submit', 'close']);
 
@@ -87,7 +86,6 @@ const title = ref('');
 const description = ref('');
 const completed = ref(false);
 const category = ref('');
-const categories = ref([]);
 const showAddCategory = ref(false);
 const newCategory = ref('');
 
@@ -115,26 +113,6 @@ function handleSubmit() {
   });
 }
 
-async function fetchCategories() {
-  try {
-    const res = await axios.get('/api/categories');
-    categories.value = res.data;
-  } catch (e) {
-    categories.value = [];
-  }
-}
-
-async function addCategory() {
-  if (!newCategory.value.trim()) return;
-  try {
-    await axios.post('/api/categories', { name: newCategory.value });
-    newCategory.value = '';
-    await fetchCategories();
-  } catch (e) {
-    // handle error
-  }
-}
-
 function selectCategory(id) {
   category.value = id;
   showAddCategory.value = false;
@@ -144,5 +122,14 @@ function toggleCategoryDropdown() {
   showAddCategory.value = !showAddCategory.value;
 }
 
-onMounted(fetchCategories);
+function addCategory() {
+  if (!newCategory.value.trim()) return;
+  store.dispatch('addCategory', newCategory.value).then(() => {
+    newCategory.value = '';
+  });
+}
+
+onMounted(() => {
+  store.dispatch('getCategories');
+});
 </script>
