@@ -1,37 +1,27 @@
 <template>
-  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 relative">
-    <div class="relative w-full sm:w-2/3">
+  <div class="flex flex-row gap-4 mb-4 w-full">
+    <div class="relative w-full mt-5">
       <input
         v-model="localSearchQuery"
         type="text"
         placeholder="Search by title or description..."
         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-      />
-      <button
+        />
+        <button
         v-if="localSearchQuery"
         @click="clearSearch"
         class="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-      >
+        >
         ✕
       </button>
     </div>
-
-    <select
-      v-model="localStatusFilter"
-      class="w-full sm:w-1/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-    >
-      <option value="">All</option>
-      <option value="1">Completed</option>
-      <option value="0">Pending</option>
-    </select>
-
     <!-- Category Filter -->
-    <div class="mb-4 flex items-center gap-2">
-      <label for="categoryFilter" class="text-sm text-gray-600">Category:</label>
+    <div class="flex flex-col w-2/5">
+      <label for="categoryFilter" class="text-xs text-gray-600 mb-1">Category:</label>
       <select
         id="categoryFilter"
         v-model="localCategoryFilter"
-        class="px-2 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+        class="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
       >
         <option value="">All</option>
         <option value="HomeWork">HomeWork</option>
@@ -39,6 +29,19 @@
         <option value="Work">Work</option>
         <option value="Personal">Personal</option>
         <option value="Errands">Errands</option>
+      </select>
+    </div>
+
+    <!-- Status Filter -->
+    <div class="flex flex-col w-1/5">
+      <label for="statusFilter" class="pr-2 text-xs text-gray-600 mb-1">Status:</label>
+      <select
+        v-model="localStatusFilter"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+      >
+        <option value="">All</option>
+        <option value="1">Completed</option>
+        <option value="0">Pending</option>
       </select>
     </div>
   </div>
