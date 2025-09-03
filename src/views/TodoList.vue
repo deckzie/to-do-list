@@ -78,9 +78,8 @@
       ...todo,
       completed: !todo.completed
     };
-    store.dispatch('updateTodo', updatedTodo).then(() => {
-      store.dispatch('getTodos'); // Refresh the list to get category relation
-    });
+    store.dispatch('updateTodo', updatedTodo); // Refresh the list to get category relation
+    
   }
 
   const user = JSON.parse(localStorage.getItem('user'));
@@ -160,12 +159,12 @@
       >
         <!-- Left side: checkbox + title -->
         <div class="flex flex-col flex-1 overflow-hidden cursor-pointer">
-          <div class="flex items-center space-x-3">
+          <div class="flex  space-x-3">
             <input
               type="checkbox"
               :checked="todo.completed"
               @change.stop="toggleCompleted(todo)"
-              class="form-checkbox h-5 w-5 text-green-500 flex-shrink-0 cursor-pointer"
+              class="mt-1 form-checkbox h-5 w-5 text-green-500 flex-shrink-0 cursor-pointer"
             />
             <div class="flex flex-col">
               <span
@@ -180,7 +179,7 @@
               <!-- Category below title -->
               <span
                 v-if="todo.category && todo.category.name"
-                class="inline-block max-w-max text-xs bg-green-500 text-white rounded-md px-2 py-0.5"
+                class="inline-block max-w-max text-xs bg-green-500 text-white rounded-2xl px-2 pb-1 pt-0.5 "
               >
                 {{ todo.category.name }}
               </span>

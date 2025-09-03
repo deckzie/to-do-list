@@ -56,7 +56,7 @@ class TodoController extends Controller
         $validated['user_id'] = $request->user()->id;
         
         $todo = Todo::create($validated);
-
+        $todo->load('category');
         return response()->json($todo, 201);
     }
 
