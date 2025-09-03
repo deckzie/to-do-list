@@ -18,17 +18,23 @@
         <div class="flex items-center w-full space-x-2 relative">
           <button
             @click="toggleCategoryDropdown"
-            class="px-2 pb-2 pt-1 rounded-md text-xs bg-gray-400 text-white hover:bg-gray-500"
-            title="Add Category"
-          >Add Category +</button>
+            :class="[
+              'px-2 py-1 rounded-md text-xs',
+              category ? 'bg-green-600 text-white font-bold' : 'bg-gray-400 text-white',
+              'hover:bg-green-700'
+            ]"
+            title="Select Category"
+          >
+            {{ selectedCategoryName || 'Add Category +' }}
+          </button>
           <!-- Category Dropdown -->
-          <div v-if="showAddCategory" class="absolute left-0 top-10 z-50 w-64 bg-white border border-gray-200 rounded shadow-lg">
+          <div v-if="showAddCategory" class="absolute left-0 top-7 z-50 w-64 bg-white border border-gray-200 rounded shadow-lg">
             <div class="max-h-40 overflow-y-auto">
               <div
                 v-for="cat in store.state.categories"
                 :key="cat.id"
                 @click="selectCategory(cat.id)"
-                class="px-4 py-2 cursor-pointer hover:bg-green-100"
+                class="px-4 py-2 cursor-pointer hover:bg-green-100 text-xs"
                 :class="{'bg-green-50 font-bold text-green-600': category === cat.id}"
               >
                 {{ cat.name }}
@@ -41,11 +47,11 @@
                 @keyup.enter="addCategory"
                 type="text"
                 placeholder="New category"
-                class="flex-1 px-2 py-1 rounded text-sm"
+                class="flex-1 px-2 py-1 rounded text-xs"
               />
               <button
                 @click="addCategory"
-                class="cursor-pointer px-3 py-1 rounded bg-green-500 text-white text-sm"
+                class="cursor-pointer px-3 py-1 rounded bg-green-500 text-white text-xs"
               >Add</button>
             </div>
           </div>
@@ -72,7 +78,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -128,6 +134,11 @@ function addCategory() {
     newCategory.value = '';
   });
 }
+
+const selectedCategoryName = computed(() => {
+  const cat = store.state.categories.find(c => c.id === category.value);
+  return cat ? cat.name : '';
+});
 
 onMounted(() => {
   store.dispatch('getCategories');

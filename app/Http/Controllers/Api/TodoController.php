@@ -45,7 +45,7 @@ class TodoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'completed' => 'boolean',
-            'category' => 'nullable|string|max:255'
+            'category_id' => 'nullable|exists:categories,id', 
         ]);
 
         // Assign the authenticated user's ID to the todo
@@ -68,7 +68,7 @@ class TodoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'completed' => 'boolean',
-            'category' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         $todo->update($validated);
