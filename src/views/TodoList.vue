@@ -23,10 +23,11 @@
 
   const searchQuery = ref('');
   const statusFilter = ref('');
+  const categoryFilter = ref('');
   const perPage = ref(10); // default value
 
-  watch([searchQuery, statusFilter, perPage], () => {
-    loadPage(1); // reset to page 1 when filters or perPage change
+  watch([searchQuery, statusFilter, perPage, categoryFilter], () => {
+    loadPage(1);
   });
 
   onMounted(() => {
@@ -35,11 +36,13 @@
   });
 
   function loadPage(page) {
+    console.log('Loading page:', page);
     const params = {
       page,
       search: searchQuery.value,
       completed: statusFilter.value,
       per_page: perPage.value,
+      category: categoryFilter.value,
     };
 
     store.dispatch('getTodos', params);
@@ -93,7 +96,8 @@
   function resetPage() {
     searchQuery.value = '';
     statusFilter.value = '';
-    loadPage(1); // Load the first page after resetting
+    categoryFilter.value = '';
+    loadPage(1);
   }
 </script>
 
@@ -113,8 +117,9 @@
 
     <!-- search and filter -->
     <SearchFilter
-    v-model:searchQuery="searchQuery"
-    v-model:statusFilter="statusFilter"
+      v-model:searchQuery="searchQuery"
+      v-model:statusFilter="statusFilter"
+      v-model:categoryFilter="categoryFilter"
     />
 
     <!-- Number of items -->

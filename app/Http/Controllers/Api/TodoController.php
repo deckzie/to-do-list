@@ -29,6 +29,11 @@ class TodoController extends Controller
             }
         }
 
+        if ($request->filled('category')) {
+            $category = $request->get('category');
+            $query->where('category', 'like', "%{$category}%");
+        }
+
         return response()->json($query->paginate($perPage));
     }
 
@@ -40,6 +45,7 @@ class TodoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'completed' => 'boolean',
+            'category' => 'required|string|max:255'
         ]);
 
         // Assign the authenticated user's ID to the todo
@@ -62,6 +68,7 @@ class TodoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'completed' => 'boolean',
+            'category' => 'required|string|max:255',
         ]);
 
         $todo->update($validated);

@@ -24,6 +24,23 @@
       <option value="1">Completed</option>
       <option value="0">Pending</option>
     </select>
+
+    <!-- Category Filter -->
+    <div class="mb-4 flex items-center gap-2">
+      <label for="categoryFilter" class="text-sm text-gray-600">Category:</label>
+      <select
+        id="categoryFilter"
+        v-model="localCategoryFilter"
+        class="px-2 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+      >
+        <option value="">All</option>
+        <option value="HomeWork">HomeWork</option>
+        <option value="Housework">Housework</option>
+        <option value="Work">Work</option>
+        <option value="Personal">Personal</option>
+        <option value="Errands">Errands</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -33,12 +50,18 @@ import { ref, watch } from 'vue';
 const props = defineProps({
   searchQuery: String,
   statusFilter: String,
+  categoryFilter: String,
 });
 
-const emit = defineEmits(['update:searchQuery', 'update:statusFilter']);
+const emit = defineEmits(['update:searchQuery', 'update:statusFilter', 'update:categoryFilter']);
 
 const localSearchQuery = ref(props.searchQuery);
 const localStatusFilter = ref(props.statusFilter);
+const localCategoryFilter = ref(props.categoryFilter);
+
+watch(localCategoryFilter, (newValue) => {
+  emit('update:categoryFilter', newValue);
+});
 
 watch(localSearchQuery, (newValue) => {
   emit('update:searchQuery', newValue);

@@ -51,23 +51,31 @@ function handleSubmit() {
       <textarea
         v-model="description"
         placeholder="Description"
-        class="w-full p-2 pb-10 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+        class="w-full p-2 pb-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
       ></textarea>
 
-      <div class="flex justify-between pb-4">
-        <label class="flex items-center pl-1 space-x-1 text-sm">
-          <input type="checkbox" v-model="completed" class="text-sm form-checkbox h-5 w-5 text-green-500" />
-          <span>Completed</span>
-        </label>
-        
-        <select v-model="category" class="px-2 justify-center py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 py-1">
+        <select
+          v-model="category"
+          class="w-full sm:w-auto px-2 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
           <option value="HomeWork">Homework</option>
           <option value="Housework">Housework</option>
           <option value="Work">Work</option>
           <option value="Personal">Personal</option>
           <option value="Errands">Errands</option>
         </select>
+
+        <label class="flex items-center space-x-2 text-sm">
+          <input
+            type="checkbox"
+            v-model="completed"
+            class="form-checkbox h-5 w-5 text-green-500"
+          />
+          <span>Completed</span>
+        </label>
       </div>
+
 
       <div class="flex justify-end space-x-2">
         <button @click="emit('close')" class="cursor-pointer px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
