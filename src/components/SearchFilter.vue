@@ -1,6 +1,7 @@
 <template>
-  <div class="flex flex-row gap-4 mb-4 w-full">
-    <div class="relative w-full mt-5">
+  <div class="flex flex-col sm:flex-row gap-4 mb-4 w-full">
+    <!-- Search Input -->
+    <div class="relative w-full sm:w-2/5 mt-2 sm:mt-5">
       <input
         v-model="localSearchQuery"
         type="text"
@@ -16,12 +17,12 @@
       </button>
     </div>
     <!-- Category Filter -->
-    <div class="flex flex-col w-2/5">
+    <div class="flex flex-col w-full sm:w-2/5">
       <label for="categoryFilter" class="text-xs text-gray-600 mb-1">Category:</label>
       <select
         id="categoryFilter"
         v-model="localCategoryFilter"
-        class="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+        class="w-full px-2  py-2 pr-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
       >
         <option value="">All</option>
         <option
@@ -33,13 +34,12 @@
         </option>
       </select>
     </div>
-
     <!-- Status Filter -->
-    <div class="flex flex-col w-1/5">
+    <div class="flex flex-col w-full sm:w-1/5">
       <label for="statusFilter" class="pr-2 text-xs text-gray-600 mb-1">Status:</label>
       <select
         v-model="localStatusFilter"
-        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+        class="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
       >
         <option value="">All</option>
         <option value="1">Completed</option>
