@@ -12,7 +12,7 @@ class TodoController extends Controller
         $perPage = $request->get('per_page', 10);
 
         // Get todos of the authenticated user
-        $query = $request->user()->todos();
+        $query = $request->user()->todos()->with('category');
 
         if ($request->has('search')) {
             $search = $request->get('search');
@@ -34,6 +34,10 @@ class TodoController extends Controller
             $query->where('category', 'like', "%{$category}%");
         }
 
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->get('category_id'));
+        }
+
         return response()->json($query->paginate($perPage));
     }
 
@@ -45,14 +49,14 @@ class TodoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'completed' => 'boolean',
-            'category' => 'required|string|max:255'
+            'category_id' => 'nullable|exists:categories,id', 
         ]);
 
         // Assign the authenticated user's ID to the todo
         $validated['user_id'] = $request->user()->id;
         
         $todo = Todo::create($validated);
-
+        $todo->load('category');
         return response()->json($todo, 201);
     }
 
@@ -68,10 +72,11 @@ class TodoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'completed' => 'boolean',
-            'category' => 'required|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         $todo->update($validated);
+        $todo->load('category');
         return $todo;
     }
 

@@ -16,7 +16,8 @@ const store = createStore({
             to: 10
             },
             loading: false
-        }
+        },
+        categories: [] // <-- add this
     },
     getters: {},
     actions: {
@@ -135,7 +136,23 @@ const store = createStore({
                 .finally(() => {
                     commit('setLoading', false);
                 });
-        }
+        },
+        async getCategories({ commit }) {
+            try {
+                const res = await axiosClient.get('/categories');
+                commit('setCategories', res.data);
+            } catch (e) {
+                commit('setCategories', []);
+            }
+        },
+        async addCategory({ dispatch }, categoryName) {
+            try {
+                await axiosClient.post('/categories', { name: categoryName });
+                dispatch('getCategories'); // refresh categories after adding
+            } catch (e) {
+                // handle error
+            }
+        },
     },
     mutations: {
         setUser(state, user) {
@@ -173,7 +190,10 @@ const store = createStore({
 
             const index = state.todos.data.findIndex(t => t.id === updated.id);
             if (index !== -1) state.todos.data[index] = updated;
-        }
+        },
+        setCategories(state, categories) {
+            state.categories = categories;
+        },
     },
     modules: {}
 
