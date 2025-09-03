@@ -24,8 +24,15 @@
               'hover:bg-green-700'
             ]"
             title="Select Category"
+            style="position: relative;"
           >
-            {{ selectedCategoryName || 'Add Category +' }}
+            <span>{{ selectedCategoryName || 'Add Category +' }}</span>
+            <button
+              v-if="category"
+              @click.stop="removeCategory"
+              class="cursor-pointer pl-2 "
+              title="Remove Category"
+            >✕</button>
           </button>
           <!-- Category Dropdown -->
           <div v-if="showAddCategory" class="absolute left-0 top-7 z-50 w-64 bg-white border border-gray-200 rounded shadow-lg">
@@ -133,6 +140,10 @@ function addCategory() {
   store.dispatch('addCategory', newCategory.value).then(() => {
     newCategory.value = '';
   });
+}
+
+function removeCategory() {
+  category.value = '';
 }
 
 const selectedCategoryName = computed(() => {
