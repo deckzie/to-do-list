@@ -8,11 +8,11 @@
   import Pagination from '../components/Pagination.vue';
   import SearchFilter from '../components/SearchFilter.vue';
   import { useRouter } from 'vue-router';
-  import ProfileDropdown from '../components/ProfileDropdown.vue';
+  // import ProfileDropdown from '../components/ProfileDropdown.vue';
 
   const showForm = ref(false);
   const selectedTodo = ref(null);
-  const showProfileMenu = ref(false);
+  // const showProfileMenu = ref(false);
 
   const store = useStore();
   const router = useRouter();
@@ -84,15 +84,15 @@
 
   const user = JSON.parse(localStorage.getItem('user'));
 
-  function toggleProfileMenu() {
-    showProfileMenu.value = !showProfileMenu.value;
-  }
+  // function toggleProfileMenu() {
+  //   showProfileMenu.value = !showProfileMenu.value;
+  // }
 
-  function logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    router.push('/login');
-  }
+  // function logout() {
+  //   localStorage.removeItem('user');
+  //   localStorage.removeItem('token');
+  //   router.push('/login');
+  // }
 
   function resetPage() {
     searchQuery.value = '';
@@ -113,7 +113,7 @@
       </h1>
 
       <!-- Profile Menu -->
-      <ProfileDropdown :user="user" @logout="logout" />
+      <!-- <ProfileDropdown :user="user" @logout="logout" /> -->
     </div>
 
     <!-- search and filter -->

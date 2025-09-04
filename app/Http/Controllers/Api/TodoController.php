@@ -11,8 +11,8 @@ class TodoController extends Controller
     {
         $perPage = $request->get('per_page', 10);
 
-        // Get todos of the authenticated user
-        $query = $request->user()->todos()->with('category');
+        // Get todos of user1
+        $query = Todo::where('user_id', 1)->with('category');
 
         if ($request->has('search')) {
             $search = $request->get('search');
@@ -53,7 +53,7 @@ class TodoController extends Controller
         ]);
 
         // Assign the authenticated user's ID to the todo
-        $validated['user_id'] = $request->user()->id;
+        $validated['user_id'] = 1; // Replace with auth()->id() when authentication is set up
         
         $todo = Todo::create($validated);
         $todo->load('category');
