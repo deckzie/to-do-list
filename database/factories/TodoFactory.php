@@ -21,7 +21,7 @@ class TodoFactory extends Factory
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'completed' => fake()->boolean(),
-            'category' => $this->faker->randomElement(['HomeWork', 'Housework', 'Work', 'Personal', 'Errands']),
+            'category_id' => fake()->numberBetween(1, 5)
         ];
     }
 }
