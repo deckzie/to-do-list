@@ -36,7 +36,6 @@
   });
 
   function loadPage(page) {
-    console.log('Loading page:', page);
     const params = {
       page,
       search: searchQuery.value,
