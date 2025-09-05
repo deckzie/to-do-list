@@ -29,14 +29,12 @@ class TodoController extends Controller
             }
         }
 
-        if ($request->filled('category')) {
-            $category = $request->get('category');
-            $query->where('category', 'like', "%{$category}%");
+        if ($request->filled('category_id')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('id', $request->get('category_id'));
+            });
         }
 
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->get('category_id'));
-        }
 
         return response()->json($query->paginate($perPage));
     }
