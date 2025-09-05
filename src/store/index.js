@@ -21,36 +21,6 @@ const store = createStore({
     },
     getters: {},
     actions: {
-        async registerUser({ commit }, userData) {
-            try {
-                const response = await axiosClient.post('/users', userData);
-                // Assuming the backend returns the created user directly
-                localStorage.setItem('user', JSON.stringify(response.data));
-                commit('setUser', response.data);
-
-                // Automatically log in the user after registration
-                const loginResponse = await axiosClient.post('/login', {
-                    email: userData.email,
-                    password: userData.password
-                });
-                localStorage.setItem('token', loginResponse.data.token);
-                commit('setUser', loginResponse.data.user);
-            } catch (error) {
-                console.error("Error registering user:", error);
-                throw error; // Re-throw the error to handle it in the component
-            }
-        },
-        async loginUser({ commit }, credentials) {
-            try {
-                const response = await axiosClient.post('/login', credentials);
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('user', JSON.stringify(response.data.user));
-                commit('setUser', response.data.user);
-            } catch (error) {
-                console.error("Error logging in user:", error);
-                throw error;
-            }
-        },
         async getTodo({commit}, todoId) {
             commit('setLoading', true);
             try {
@@ -123,7 +93,6 @@ const store = createStore({
                     commit('setLoading', false);
                 });
         },
-
         updateTodo({ commit }, todoData) {
             commit('setLoading', true);
             axiosClient.put(`/todos/${todoData.id}`, todoData)
@@ -150,7 +119,7 @@ const store = createStore({
                 await axiosClient.post('/categories', { name: categoryName });
                 dispatch('getCategories'); // refresh categories after adding
             } catch (e) {
-                // handle error
+                commit('setCategories', []);
             }
         },
     },
