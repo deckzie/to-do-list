@@ -67,31 +67,25 @@ const store = createStore({
                     commit('setLoading', false);
                 });
         },
-        deleteTodo({commit}, todoId) {
+        async deleteTodo({commit, dispatch }, todoId) {
             commit('setLoading', true);
-            axiosClient.delete(`/todos/${todoId}`)
-                .then(() => {
-                    commit('removeTodo', todoId);
-                })
-                .catch(error => {
-                    console.error("Error deleting todo:", error);
-                })
-                .finally(() => {
-                    commit('setLoading', false);
-                });
+            try {
+                await axiosClient.delete(`/todos/${todoId}`);
+                await dispatch('getTodos'); // re-fetch updated list and pagination
+            } catch (error) {
+                console.error("Error deleting todo:", error);
+            }
+            commit('setLoading', false);
         },
-        addTodo({ commit }, todoData) {
+        async addTodo({commit, dispatch }, todoData) {
             commit('setLoading', true);
-            axiosClient.post('/todos', todoData)
-                .then(({ data }) => {
-                    commit('addTodo', data);
-                })
-                .catch(error => {
-                    console.error("Error adding todo:", error);
-                })
-                .finally(() => {
-                    commit('setLoading', false);
-                });
+            try {
+                await axiosClient.post('/todos', todoData);
+                await dispatch('getTodos'); // re-fetch updated list and pagination
+            } catch (error) {
+                console.error("Error adding todo:", error);
+            }
+            commit('setLoading', false);
         },
         updateTodo({ commit }, todoData) {
             commit('setLoading', true);

@@ -63,7 +63,6 @@
   }
 
   function handleSubmit(todoData) {
-
     if (todoData.id) {
       store.dispatch('updateTodo', todoData);
     } else {
