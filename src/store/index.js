@@ -32,7 +32,7 @@ const store = createStore({
                 commit('setLoading', false);
             }
         },
-        async getTodos({ commit }, params = { page: 1 }) {
+        async getTodos({ commit }, params = { }) {
             commit('setLoading', true);
             try {
                 const response = await axiosClient.get('/todos', { params });
@@ -71,7 +71,7 @@ const store = createStore({
             commit('setLoading', true);
             try {
                 await axiosClient.delete(`/todos/${todoId}`);
-                await dispatch('getTodos'); // re-fetch updated list and pagination
+                // await dispatch('getTodos');
             } catch (error) {
                 console.error("Error deleting todo:", error);
             }
@@ -81,7 +81,7 @@ const store = createStore({
             commit('setLoading', true);
             try {
                 await axiosClient.post('/todos', todoData);
-                await dispatch('getTodos'); // re-fetch updated list and pagination
+                // await dispatch('getTodos');
             } catch (error) {
                 console.error("Error adding todo:", error);
             }

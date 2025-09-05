@@ -47,9 +47,16 @@
     store.dispatch('getTodos', params);
   }
 
-  function deleteTodo(index) {
+  async function deleteTodo(index) {
     const todoId = todos.value[index].id;
-    store.dispatch('deleteTodo', todoId);
+    await store.dispatch('deleteTodo', todoId);
+    await store.dispatch('getTodos', {
+        page: 1,
+        per_page: perPage.value,
+        search: searchQuery.value,
+        completed: statusFilter.value,
+        category_id: categoryFilter.value
+      }); 
   }
 
   function editTodo(index) {
@@ -62,11 +69,18 @@
     showForm.value = true;
   }
 
-  function handleSubmit(todoData) {
+  async function handleSubmit(todoData) {
     if (todoData.id) {
       store.dispatch('updateTodo', todoData);
     } else {
-      store.dispatch('addTodo', todoData);
+      await store.dispatch('addTodo', todoData);
+      await store.dispatch('getTodos', {
+        page: 1,
+        per_page: perPage.value,
+        search: searchQuery.value,
+        completed: statusFilter.value,
+        category_id: categoryFilter.value
+      }); 
     }
     showForm.value = false;
   }
