@@ -213,7 +213,7 @@
     </div>
     
     <!-- add Todo button -->
-    <button @click="addTodo" class="flex font-bold cursor-pointer fixed bottom-5 right-5 px-4 py-4 pr-5 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600">
+    <button @click="addTodo" class="flex font-bold cursor-pointer fixed bottom-10 right-10 px-4 py-4 pr-5 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600">
       <PlusIcon class="w-6 h-6 pr-1" /> New Todo
     </button>
 
